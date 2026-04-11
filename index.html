@@ -9,6 +9,7 @@
             --neon-blue: #00f2ff;
             --dark-bg: #050505;
             --matrix-green: #00ff41;
+            --cyber-yellow: #fcee0a;
         }
 
         body {
@@ -17,7 +18,8 @@
             font-family: 'Courier New', monospace;
             margin: 0;
             overflow-x: hidden;
-            border: 2px solid var(--neon-blue);
+            border: 4px solid var(--neon-blue);
+            min-height: 100vh;
         }
 
         .header {
@@ -38,10 +40,11 @@
         .status-bar {
             background: var(--neon-pink);
             color: black;
-            padding: 5px;
+            padding: 8px;
             font-weight: bold;
             text-align: center;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+            text-transform: uppercase;
         }
 
         .container {
@@ -56,12 +59,14 @@
             padding: 20px;
             background: rgba(0, 242, 255, 0.05);
             position: relative;
+            box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2);
         }
 
         .card h2 {
             color: var(--neon-blue);
             border-left: 5px solid var(--neon-pink);
             padding-left: 10px;
+            text-transform: uppercase;
         }
 
         .stats {
@@ -80,11 +85,25 @@
             font-weight: bold;
         }
 
+        /* Секция SoundCloud */
+        .music-section {
+            grid-column: span 2;
+            border: 1px solid var(--cyber-yellow);
+            padding: 20px;
+            background: rgba(252, 238, 10, 0.05);
+            margin-top: 10px;
+        }
+
+        .music-section h2 {
+            color: var(--cyber-yellow);
+            border-left: 5px solid white;
+        }
+
         .footer {
             text-align: center;
-            padding: 20px;
-            font-size: 0.8rem;
-            opacity: 0.7;
+            padding: 30px;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.8);
             border-top: 1px dashed var(--neon-blue);
         }
 
@@ -96,6 +115,11 @@
             2%, 64% { transform: translate(2px,0) skew(0deg); }
             4%, 60% { transform: translate(-2px,0) skew(0deg); }
             62% { transform: translate(0,0) skew(5deg); }
+        }
+
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; }
+            .music-section { grid-column: span 1; }
         }
     </style>
 </head>
@@ -114,25 +138,37 @@
         <div class="card">
             <h2>GAMING_LOGS</h2>
             <ul class="stats">
-                <li><span class="highlight">Brawl Stars:</span> Абсолютный чемпион ranked</li>
+                <li><span class="highlight">Brawl Stars:</span> Абсолютный чемпион арены</li>
                 <li><span class="highlight">Standoff 2:</span> Реакция бога, скилл легенды</li>
-                <li><span class="highlight">Minecraft:</span> Архитектор писюнов и баров</li>
-                <li><span class="highlight">Dota 2:</span> <span style="color:red">Бружу на Бруде</span> (Web-weaver master)</li>
-                <li><span class="highlight">Counter-Strike 2:</span> 7x7% Headshot ratio</li>
-                <li><span class="highlight">Postal 2:</span> Единственный, кто прошел эту жизнь с огоньком</li>
+                <li><span class="highlight">Minecraft:</span> Архитектор новых миров</li>
+                <li><span class="highlight">Dota 2:</span> <span style="color:#ff4d4d">Бружу на Бруде</span></li>
+                <li><span class="highlight">Counter-Strike 2:</span> 100% Headshot ratio</li>
+                <li><span class="highlight">Postal 2:</span> Безумный драйв</li>
             </ul>
         </div>
 
         <div class="card">
             <h2>CORE_VALUES</h2>
-            <p>Учеба: <span class="highlight">Detected (5.0 GPA)</span>. В журнале только пятерки.</p>
-            <p>Семья: <span style="color: var(--neon-pink);">❤️ Люблю маму, папу и всех родных.</span> Это мой главный тыл в этом цифровом мире.</p>
-            <p>Комьюнити: Свой человек на сервере <strong>XIVIVIDE</strong>. Ищи меня в голосовых каналах.</p>
+            <p>Учеба: <span class="highlight">DETECTED (5/5)</span>. Только высший балл.</p>
+            <p>Семья: <span style="color: var(--neon-pink);">❤ Люблю маму, папу и всех родных.</span></p>
+            <p>Комьюнити: Элита сервера <strong>XIVIVIDE</strong>.</p>
+        </div>
+
+        <div class="card music-section">
+            <h2>SOUND_WAVES // SOUNDCLOUD</h2>
+            <p>Слушай мои треки прямо здесь:</p>
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" 
+                src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/qweire&color=%23ff00ff&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+            </iframe>
+            <p style="font-size: 0.7rem; color: var(--cyber-yellow); margin-top: 10px;">
+                *Примечание: Замени 'qweire' в коде на свой ник в SoundCloud, чтобы загрузился именно твой плейлист.
+            </p>
         </div>
     </div>
 
     <div class="footer">
-        SYSTEM DESIGNED BY <span style="color: var(--neon-pink);">blarfik</span> & qwe1re | 2026(C) NEO-TOKYO
+        <p>CREATED WITH HELP FROM <span style="color: var(--neon-pink);">blarfik</span></p>
+        <p style="color: var(--neon-blue);">© 2026 QWE1RE // XIVIVIDE PRODUCTION</p>
     </div>
 
 </body>
