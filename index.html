@@ -6,15 +6,17 @@
     <title>qwe1re | Links</title>
     <style>
         :root {
-            --bg-color: #0f0f0f;
-            --card-bg: #1a1a1a;
-            --text-color: #ffffff;
-            --accent-color: #ff5500; /* Цвет SoundCloud */
-            --tg-color: #229ED9;    /* Цвет Telegram */
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #c9d1d9;
+            --accent-sc: #ff5500;  /* SoundCloud */
+            --accent-tg: #229ED9;  /* Telegram */
+            --accent-ds: #5865F2;  /* Discord */
+            --accent-st: #000000;  /* Steam */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             display: flex;
@@ -22,65 +24,67 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
         }
 
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
-            padding: 20px;
         }
 
         .profile-img {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--tg-color), var(--accent-color));
-            margin-bottom: 15px;
-            display: inline-block;
+            background: linear-gradient(135deg, #30363d, #6e7681);
+            margin: 0 auto 20px;
+            border: 3px solid #30363d;
         }
 
         h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-
-        p {
-            opacity: 0.7;
-            margin-bottom: 30px;
+            font-size: 1.8rem;
+            margin: 0 0 10px;
+            color: white;
         }
 
         .links {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            margin-top: 25px;
         }
 
         .link-card {
             background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 15px;
             text-decoration: none;
             color: white;
-            font-weight: 600;
-            transition: transform 0.2s, background-color 0.2s;
-            border: 1px solid transparent;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .link-card:hover {
-            transform: translateY(-3px);
-            background-color: #252525;
-            border-color: #444;
+            transform: scale(1.02);
+            background-color: #21262d;
+            border-color: #8b949e;
         }
 
-        .tg-link { border-left: 5px solid var(--tg-color); }
-        .sc-link { border-left: 5px solid var(--accent-color); }
+        /* Индивидуальные акценты при наведении */
+        .tg:hover { box-shadow: 0 0 15px rgba(34, 158, 217, 0.3); }
+        .sc:hover { box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
+        .ds:hover { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
+        .st:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
 
         .footer {
             margin-top: 40px;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            font-size: 0.85rem;
+            opacity: 0.4;
         }
     </style>
 </head>
@@ -89,26 +93,32 @@
     <div class="container">
         <img src="https://i.pinimg.com/736x/1a/14/d5/1a14d5001cfb291570a4e1cec019ccb2.jpg" class="profile-img">
         <h1>qwe1re</h1>
-        <p>why not xdd</p>
-
+        
         <div class="links">
-            <a href="https://t.me/NETYKOTA" class="link-card tg-link" target="_blank">
-                Telegram (1st)
-            </a>
-            
-            <a href="https://t.me/Dontwritemeanymorepls" class="link-card tg-link" target="_blank">
-                Telegram (2nd)
+            <a href="https://t.me/NETYKOTA" class="link-card tg" target="_blank">
+                Telegram
             </a>
 
-            <a href="https://soundcloud.com/qweire" class="link-card sc-link" target="_blank">
+            <a href="https://soundcloud.com/qweire" class="link-card sc" target="_blank">
                 SoundCloud
+            </a>
+
+            <a href="https://discord.com/users/qwe1re" class="link-card ds" target="_blank">
+                Discord
+            </a>
+
+            <a href="https://steamcommunity.com/id/qweire" class="link-card st" target="_blank">
+                Steam Profile
             </a>
         </div>
 
         <div class="footer">
-            © 2026 qwe1re
+            2026 • qwe1re
         </div>
     </div>
+
+</body>
+</html>
 
 </body>
 </html>
