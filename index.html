@@ -9,10 +9,10 @@
             --bg-color: #0d1117;
             --card-bg: #161b22;
             --text-color: #c9d1d9;
-            --accent-sc: #ff5500;  /* SoundCloud */
-            --accent-tg: #229ED9;  /* Telegram */
-            --accent-ds: #5865F2;  /* Discord server */
-            --accent-st: #000000;  /* Steam */
+            --accent-sc: #ff5500;
+            --accent-tg: #229ED9;
+            --accent-ds: #5865F2;
+            --accent-st: #ffffff;
         }
 
         body {
@@ -25,12 +25,18 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            overflow: hidden; /* Убирает дергание при анимации */
         }
 
         .container {
             width: 100%;
             max-width: 420px;
             text-align: center;
+        }
+
+        /* Анимация для заголовка и фото */
+        .profile-header {
+            animation: fadeIn 0.8s ease forwards;
         }
 
         .profile-img {
@@ -55,7 +61,10 @@
             margin-top: 25px;
         }
 
+        /* Базовое состояние кнопок (невидимы до анимации) */
         .link-card {
+            opacity: 0;
+            transform: translateY(20px);
             background-color: var(--card-bg);
             padding: 16px;
             border-radius: 15px;
@@ -67,58 +76,71 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            animation: slideUp 0.6s ease forwards;
         }
 
+        /* Задержки для каждой кнопки, чтобы они появлялись по очереди */
+        .link-card:nth-child(1) { animation-delay: 0.2s; }
+        .link-card:nth-child(2) { animation-delay: 0.3s; }
+        .link-card:nth-child(3) { animation-delay: 0.4s; }
+        .link-card:nth-child(4) { animation-delay: 0.5s; }
+
         .link-card:hover {
-            transform: scale(1.02);
+            transform: scale(1.02) !important;
             background-color: #21262d;
             border-color: #8b949e;
         }
 
-        /* Индивидуальные акценты при наведении */
         .tg:hover { box-shadow: 0 0 15px rgba(34, 158, 217, 0.3); }
         .sc:hover { box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
         .ds:hover { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
         .st:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
 
+        /* Описание анимаций */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .footer {
             margin-top: 40px;
             font-size: 0.85rem;
             opacity: 0.4;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.8s;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <img src="https://i.pinimg.com/736x/1a/14/d5/1a14d5001cfb291570a4e1cec019ccb2.jpg" class="profile-img">
-        <h1>qwe1re</h1>
+        <div class="profile-header">
+            <img src="https://i.pinimg.com/736x/1a/14/d5/1a14d5001cfb291570a4e1cec019ccb2.jpg" class="profile-img">
+            <h1>qwe1re</h1>
+        </div>
         
         <div class="links">
-            <a href="https://t.me/Dontwritemeanymorepls" class="link-card tg" target="_blank">
-                Telegram
-            </a>
-
-            <a href="https://soundcloud.com/qweire" class="link-card sc" target="_blank">
-                SoundCloud
-            </a>
-
-            <a href="https://discord.gg/PmK2zEqN" class="link-card ds" target="_blank">
-                Discord server
-            </a>
-
-            <a href="https://steamcommunity.com/id/qweire" class="link-card st" target="_blank">
-                Steam Profile
-            </a>
+            <a href="https://t.me/Dontwritemeanymorepls" class="link-card tg" target="_blank">Telegram</a>
+            <a href="https://soundcloud.com/qweire" class="link-card sc" target="_blank">SoundCloud</a>
+            <a href="https://discord.gg/PmK2zEqN" class="link-card ds" target="_blank">Discord server</a>
+            <a href="https://steamcommunity.com/id/qweire" class="link-card st" target="_blank">Steam Profile</a>
         </div>
 
         <div class="footer">
-            2026 • qwe1re x blarfik<3
+            2026 • qwe1re x blarfik <33
         </div>
     </div>
-
-</body>
-</html>
 
 </body>
 </html>
