@@ -2,162 +2,106 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>QWE1RE // SYSTEM_OVERRIDE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qwe1re | SoundCloud</title>
     <style>
-        :root {
-            --neon-pink: #ff00ff;
-            --neon-blue: #00f2ff;
-            --dark-bg: #050505;
-            --matrix-green: #00ff41;
-            --cyber-yellow: #fcee0a;
-        }
-
+        /* Стиль "Черный Лофт" */
         body {
-            background-color: var(--dark-bg);
-            color: white;
-            font-family: 'Courier New', monospace;
             margin: 0;
-            overflow-x: hidden;
-            border: 4px solid var(--neon-blue);
+            padding: 0;
+            background-color: #0a0a0a; /* Глубокий черный */
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1517502474097-f9b30659dadb?q=80&w=2000'); /* Текстура бетона/лофта */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
         }
 
-        .header {
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: rgba(20, 20, 20, 0.85); /* Полупрозрачная панель */
+            padding: 40px;
+            border-radius: 4px;
+            border: 1px solid #333; /* Индустриальная рамка */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
             text-align: center;
-            padding: 50px;
-            background: linear-gradient(180deg, rgba(0,242,255,0.1) 0%, rgba(0,0,0,0) 100%);
-            border-bottom: 2px solid var(--neon-pink);
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 3rem;
+            letter-spacing: 8px;
             text-transform: uppercase;
-            letter-spacing: 10px;
-            text-shadow: 3px 3px var(--neon-pink), -3px -3px var(--neon-blue);
-            margin: 0;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 200;
         }
 
-        .status-bar {
-            background: var(--neon-pink);
-            color: black;
-            padding: 8px;
-            font-weight: bold;
-            text-align: center;
-            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 40px;
-        }
-
-        .card {
-            border: 1px solid var(--neon-blue);
-            padding: 20px;
-            background: rgba(0, 242, 255, 0.05);
-            box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2);
-        }
-
-        .card h2 {
-            color: var(--neon-blue);
-            border-left: 5px solid var(--neon-pink);
-            padding-left: 10px;
-            text-transform: uppercase;
-        }
-
-        .stats {
-            list-style: none;
-            padding: 0;
-        }
-
-        .stats li {
-            margin: 10px 0;
-            padding: 5px;
-            border-bottom: 1px solid #333;
-        }
-
-        .highlight {
-            color: var(--matrix-green);
-            font-weight: bold;
-        }
-
-        .music-section {
-            grid-column: span 2;
-            border: 1px solid var(--cyber-yellow);
-            padding: 20px;
-            background: rgba(252, 238, 10, 0.05);
-        }
-
-        .music-section h2 {
-            color: var(--cyber-yellow);
-            border-left: 5px solid white;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px;
+        .sub-text {
             font-size: 0.9rem;
-            background: rgba(0,0,0,0.8);
-            border-top: 1px dashed var(--neon-blue);
+            color: #888;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
         }
 
-        .glitch {
-            animation: glitch 1s linear infinite;
+        .sc-widget-container {
+            border-top: 1px solid #333;
+            padding-top: 30px;
         }
 
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px,0) skew(0deg); }
-            4%, 60% { transform: translate(-2px,0) skew(0deg); }
-            62% { transform: translate(0,0) skew(5deg); }
+        .btn-profile {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #fff;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        @media (max-width: 800px) {
-            .container { grid-template-columns: 1fr; }
-            .music-section { grid-column: span 1; }
+        .btn-profile:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Адаптив для мобилок */
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1 class="glitch">QWE1RE</h1>
-        <p>ACCESS GRANTED // ELITE PLAYER & STUDENT</p>
-    </div>
-
-    <div class="status-bar">
-        GRADE: 5/5 | LOCATION: XIVIVIDE | STATUS: БРУЖУ НА БРУДЕ
-    </div>
-
     <div class="container">
-        <div class="card">
-            <h2>GAMING_LOGS</h2>
-            <ul class="stats">
-                <li><span class="highlight">Brawl Stars:</span> CHAMPION</li>
-                <li><span class="highlight">Standoff 2:</span> ELITE SNIPER</li>
-                <li><span class="highlight">Minecraft:</span> GOD MODE</li>
-                <li><span class="highlight">Dota 2:</span> BROODMOTHER MASTER</li>
-                <li><span class="highlight">CS 2:</span> GLOBAL SKILL</li>
-                <li><span class="highlight">Postal 2:</span> LEGENDARY CHAOS</li>
-            </ul>
+        <h1>qwe1re</h1>
+        <p class="sub-text">SoundCloud Production</p>
+
+        <div class="sc-widget-container">
+            <iframe 
+                width="100%" 
+                height="300" 
+                scrolling="no" 
+                frameborder="no" 
+                allow="autoplay" 
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/1070529949&color=%23000000&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true">
+            </iframe>
         </div>
 
-        <div class="card">
-            <h2>CORE_VALUES</h2>
-            <p>Учеба: <span class="highlight">ТОЛЬКО ПЯТЕРКИ (5.0)</span></p>
-            <p>Семья: <span style="color: var(--neon-pink);">❤ Люблю маму, папу и родных.</span></p>
-            <p>Discord: Актив на <span class="highlight">XIVIVIDE</span></p>
-        </div>
-
-        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1150185952&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/ak2angel" title="@aquagwap" target="_blank" style="color: #cccccc; text-decoration: none;">@aquagwap</a> · <a href="https://soundcloud.com/ak2angel/aquakey-svet-mechey-prod-osirigwap" title="AQUAKEY - СВЕТ МЕЧЕЙ (prod OSIRI$GWAP)" target="_blank" style="color: #cccccc; text-decoration: none;">AQUAKEY - СВЕТ МЕЧЕЙ (prod OSIRI$GWAP)</a></div>
-    </div>
-
-    <div class="footer">
-        <p>CREATED WITH <span style="color: var(--neon-pink);">blarfik</span> | POWERED BY QWE1RE</p>
-        <p style="color: var(--neon-blue);">2026 // NEON DISTRICT // XIVIVIDE</p>
+        <a href="https://soundcloud.com/qweire" target="_blank" class="btn-profile">Открыть профиль</a>
     </div>
 
 </body>
