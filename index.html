@@ -22,7 +22,6 @@
     overflow-x: hidden;
   }
 
-  /* Увеличили рамку и отступы */
   .main-frame {
     width: 100%;
     max-width: 1300px;
@@ -40,10 +39,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 750px;
+    min-height: 700px;
   }
 
-  /* Главный заголовок */
   .hero-title {
     font-family: 'Oswald', sans-serif;
     font-size: clamp(60px, 11vw, 150px);
@@ -62,19 +60,17 @@
     text-align: center;
   }
 
-  /* Центральный блок с цитатами */
   .content-area {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 180px;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
     z-index: 2;
     flex-grow: 1;
   }
 
-  /* Цитаты по бокам */
   .text-col {
     width: 28%;
     font-size: 13px;
@@ -106,7 +102,6 @@
     right: 0;
   }
 
-  /* Нижний текст */
   .bottom-text {
     display: flex;
     justify-content: space-between;
@@ -118,19 +113,17 @@
     text-transform: uppercase;
     position: relative;
     z-index: 3;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
   .text-left { color: #fff; display: flex; align-items: center; gap: 20px;}
   .text-left .plus { color: #b46aff; font-size: 1.2em; }
   .text-right { color: #fff; text-align: right; }
 
-  /* Кнопка */
   .action-btn-wrapper {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: 40px;
     z-index: 3;
   }
 
@@ -153,21 +146,6 @@
     box-shadow: 0 0 40px rgba(180, 106, 255, 0.8);
   }
 
-  /* Контейнер для Spotify */
-  .spotify-wrapper {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    z-index: 3;
-    position: relative;
-  }
-  
-  .spotify-wrapper iframe {
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-
-  /* Блок результата */
   .result-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -225,7 +203,6 @@
     .text-col { width: 100%; text-align: center; padding: 0; }
     .text-col::before { display: none; }
     .bottom-text { font-size: 50px; }
-    .spotify-wrapper iframe { height: 152px; }
   }
 </style>
 </head>
@@ -233,18 +210,14 @@
 
 <div class="main-frame">
   
-  <!-- Заголовок -->
   <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
 
-  <!-- Центральный блок с цитатами -->
   <div class="content-area">
-    
     <div class="text-col">
       «Вы вообще понимаете,<br>
       кто перед вами<br>
       находится?»
     </div>
-
     <div class="text-col right">
       «Это был тактический мув,<br>
       вы ничего<br>
@@ -252,7 +225,6 @@
     </div>
   </div>
 
-  <!-- Нижний текст -->
   <div class="bottom-text">
     <div class="text-left">
       КС <span class="plus">+</span>
@@ -262,31 +234,21 @@
     </div>
   </div>
 
-  <!-- Кнопка -->
   <div class="action-btn-wrapper">
     <button id="rollBtn" class="action-btn">Крутить судьбу</button>
   </div>
 
-  <!-- Встроенный Spotify Плеер -->
-  <div class="spotify-wrapper">
-    <iframe style="border-radius:12px" 
-            src="https://open.spotify.com/embed/playlist/2K2rmhFzQbyP6HSSzQS3rN?utm_source=generator&theme=0" 
-            width="100%" 
-            height="152" 
-            frameBorder="0" 
-            allowfullscreen="" 
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-            loading="lazy">
-    </iframe>
-  </div>
+  <!-- НЕВИДИМЫЙ АУДИОПЛЕЕР -->
+  <audio id="bgMusic" loop>
+    <!-- Файл music.mp3 должен лежать в этой же папке -->
+    <source src="music.mp3" type="audio/mpeg">
+    Ваш браузер не поддерживает аудио.
+  </audio>
 
-  <!-- Оверлей с результатом -->
   <div id="resultOverlay" class="result-overlay">
     <img id="resImg" class="result-image" src="" alt="Результат">
-    
     <div id="resTitle" class="result-title"></div>
     <div id="resSub" class="result-sub"></div>
-    
     <button id="closeBtn" class="action-btn" style="margin-top: 40px; background: transparent; border: 2px solid #b46aff; color: #b46aff; box-shadow: none; padding: 12px 40px; font-size: 18px;">Закрыть</button>
   </div>
 
@@ -297,16 +259,14 @@
   var rollBtn = document.getElementById('rollBtn');
   var overlay = document.getElementById('resultOverlay');
   var closeBtn = document.getElementById('closeBtn');
+  var bgMusic = document.getElementById('bgMusic');
   
   var resImg = document.getElementById('resImg');
   var resTitle = document.getElementById('resTitle');
   var resSub = document.getElementById('resSub');
 
-  // ==========================================
-  // ССЫЛКИ НА КАРТИНКИ
-  // ==========================================
-  var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; 
-  var NO_IMAGE_URL  = "https://i.pinimg.com/736x/f3/d7/47/f3d747fe35ddb4d1353ece896f566d1f.jpg";  
+  var YES_IMAGE_URL = "https://i.ibb.co/6P5KqK0/purple-girl.jpg"; 
+  var NO_IMAGE_URL  = "https://i.ibb.co/0yJzVq3/anime-face.jpg";  
   
   var quotes = [
     "«Абсолютный!»", "«Запоминайте цитату…»", "«Муваюсь так жёстко!»",
@@ -330,6 +290,22 @@
   ];
 
   rollBtn.addEventListener('click', function() {
+    // Запускаем музыку при первом клике
+    if (bgMusic.paused) {
+      bgMusic.volume = 0.4; // Громкость (40%)
+      
+      // Ждем загрузки метаданных (длительности), чтобы перемотка сработала
+      if (bgMusic.readyState >= 1) {
+        setRandomStartTime();
+      } else {
+        bgMusic.addEventListener('loadedmetadata', setRandomStartTime, { once: true });
+      }
+
+      bgMusic.play().catch(function(error) {
+        console.log("Автовоспроизведение заблокировано или файл не найден.");
+      });
+    }
+
     rollBtn.disabled = true;
     rollBtn.textContent = "Решаем...";
 
@@ -346,6 +322,21 @@
       }
     }, 80);
   });
+
+  // Функция для установки случайного времени старта
+  function setRandomStartTime() {
+    var duration = bgMusic.duration;
+    
+    // Диапазон 13 минут (13 * 60 = 780 секунд)
+    // Если трек короче 13 минут, берем чуть меньше его полной длины (оставляем 5 сек запаса)
+    var maxTime = Math.min(780, duration - 5); 
+    
+    if (maxTime > 0) {
+      // Выбираем случайное время от 0 до maxTime
+      var randomTime = Math.random() * maxTime;
+      bgMusic.currentTime = randomTime;
+    }
+  }
 
   function showFinalResult() {
     var isYes = Math.random() < 0.3;
