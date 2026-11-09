@@ -96,7 +96,8 @@
   .made-by {
     position: absolute;
     bottom: 20px;
-    text-align: center;
+    left: 30px; /* Сдвинули влево, чтобы не мешало плееру */
+    text-align: left;
     font-family: 'Inter', sans-serif;
     font-size: 12px;
     color: #666;
@@ -105,15 +106,15 @@
     z-index: 3;
   }
 
-  /* ---------------- ПЛЕЕР СПРАВА СВЕРХУ ---------------- */
+  /* ---------------- ПЛЕЕР В ПРАВОМ НИЖНЕМ УГЛУ ---------------- */
   .audio-player {
     position: absolute;
-    top: 30px;
-    right: 30px;
+    bottom: 20px; /* Прижат к низу */
+    right: 30px;  /* Прижат вправо */
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: rgba(10, 10, 10, 0.8);
+    background: rgba(10, 10, 10, 0.85);
     border: 1px solid rgba(180, 106, 255, 0.3);
     padding: 12px 15px;
     border-radius: 12px;
@@ -216,8 +217,8 @@
   }
   
   .result-image {
-    max-width: 340px;
-    max-height: 340px;
+    max-width: 300px;
+    max-height: 300px;
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
@@ -228,7 +229,7 @@
 
   .result-title {
     font-family: 'Oswald', sans-serif;
-    font-size: 80px;
+    font-size: 70px;
     color: #b46aff;
     margin-bottom: 15px;
     text-transform: uppercase;
@@ -236,31 +237,108 @@
     line-height: 1;
   }
   .result-sub {
-    font-size: 20px;
+    font-size: 18px;
     color: #ccc;
     text-align: center;
     max-width: 800px;
     font-style: italic;
     line-height: 1.4;
+    margin-bottom: 20px;
   }
   .result-sub.no { color: #ff4444; }
 
+  /* Блок с кнопками */
+  .result-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  /* Оранжевая кнопка FACEIT */
+  .faceit-btn {
+    background: #ff8c00;
+    color: #000;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+    transition: all 0.3s;
+    display: none; 
+  }
+  .faceit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 140, 0, 0.8);
+    background: #ffaa33;
+  }
+
+  /* Красная кнопка YouTube */
+  .youtube-btn {
+    background: #ff0000;
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s;
+    display: none;
+  }
+  .youtube-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    background: #ff3333;
+  }
+
+  /* Кнопка Закрыть */
+  .close-btn {
+    background: transparent; 
+    border: 2px solid #b46aff; 
+    color: #b46aff; 
+    box-shadow: none; 
+    padding: 12px 40px; 
+    font-size: 18px;
+  }
+  .close-btn:hover {
+    background: rgba(180, 106, 255, 0.1);
+  }
+
   @media (max-width: 768px) {
-    .main-frame { padding: 20px; min-height: auto; gap: 30px; margin-top: 60px; }
+    .main-frame { padding: 20px; min-height: auto; gap: 30px; margin-top: 60px; padding-bottom: 120px; }
     .hero-title { font-size: 50px; white-space: normal; }
     .center-gif { width: 280px; height: 280px; }
-    .made-by { bottom: 10px; }
     
-    /* Адаптация плеера под мобилки */
+    /* Плеер на мобилках по центру внизу */
     .audio-player { 
       position: relative; 
-      top: 0; 
+      bottom: 0; 
       right: 0; 
       width: 100%; 
       max-width: 350px; 
-      margin-bottom: 10px; 
+      margin: 0 auto;
+    }
+    .made-by {
+      position: relative;
+      bottom: 0;
+      left: 0;
+      margin-top: 20px;
     }
     body { padding-top: 20px; align-items: flex-start; }
+    .result-image { max-width: 200px; max-height: 200px; }
+    .result-title { font-size: 50px; }
+    .result-sub { font-size: 16px; }
   }
 </style>
 </head>
@@ -268,11 +346,18 @@
 
 <div class="main-frame">
   
-  <!-- НОВЫЙ АУДИОПЛЕЕР СПРАВА СВЕРХУ -->
+  <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
+
+  <img src="https://media1.tenor.com/m/9MwgBZ30qnsAAAAd/crona-soul-eater.gif" class="center-gif" alt="Crona">
+
+  <button id="rollBtn" class="action-btn">Крутить судьбу</button>
+
+  <div class="made-by">made by qwe1re</div>
+
+  <!-- ПЛЕЕР В ПРАВОМ НИЖНЕМ УГЛУ -->
   <div class="audio-player">
     <div class="player-controls">
       <button id="playBtn" class="play-btn">
-        <!-- Иконка Play (по умолчанию) -->
         <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
       </button>
       <div class="seek-bar">
@@ -289,17 +374,7 @@
     </div>
   </div>
 
-  <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
-
-  <img src="https://media1.tenor.com/m/9MwgBZ30qnsAAAAd/crona-soul-eater.gif" class="center-gif" alt="Crona">
-
-  <button id="rollBtn" class="action-btn">Крутить судьбу</button>
-
-  <div class="made-by">made by qwe1re</div>
-
-  <!-- АУДИО -->
   <audio id="bgMusic" loop>
-    <!-- Убедись, что файл music.mp3 лежит в папке с сайтом -->
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
@@ -308,7 +383,16 @@
     <img id="resImg" class="result-image" src="" alt="Результат">
     <div id="resTitle" class="result-title"></div>
     <div id="resSub" class="result-sub"></div>
-    <button id="closeBtn" class="action-btn" style="margin-top: 40px; background: transparent; border: 2px solid #b46aff; color: #b46aff; box-shadow: none; padding: 12px 40px; font-size: 18px;">Закрыть</button>
+    
+    <div class="result-buttons">
+      <!-- Оранжевая кнопка (для РЕГАТЬ) -->
+      <a href="https://www.faceit.com/ru/matchmaking" target="_blank" id="faceitBtn" class="faceit-btn">Играть на FACEIT</a>
+      
+      <!-- Красная кнопка (для НЕ РЕГАТЬ) -->
+      <a href="https://www.youtube.com/" target="_blank" id="youtubeBtn" class="youtube-btn">Смотреть YouTube</a>
+      
+      <button id="closeBtn" class="action-btn close-btn">Закрыть</button>
+    </div>
   </div>
 
 </div>
@@ -322,6 +406,10 @@
   var resImg = document.getElementById('resImg');
   var resTitle = document.getElementById('resTitle');
   var resSub = document.getElementById('resSub');
+  
+  // Кнопки
+  var faceitBtn = document.getElementById('faceitBtn');
+  var youtubeBtn = document.getElementById('youtubeBtn');
 
   // --- ЭЛЕМЕНТЫ ПЛЕЕРА ---
   var bgMusic = document.getElementById('bgMusic');
@@ -336,7 +424,7 @@
   var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; 
   var NO_IMAGE_URL  = "https://i.pinimg.com/736x/f3/d7/47/f3d747fe35ddb4d1353ece896f566d1f.jpg";  
   
-  // СПИСОК ЦИТАТ (в результатах)
+  // СПИСОК ЦИТАТ
   var quotes = [
     "«Абсолютный!»", "«Запоминайте цитату…»", "«Муваюсь так жёстко!»",
     "«Вы зашли на стрим к абсолютному»", "«Ты что, глупый?!»",
@@ -359,8 +447,6 @@
   ];
 
   // --- ЛОГИКА ПЛЕЕРА ---
-  
-  // Форматирование времени (из секунд в 0:00)
   function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     var m = Math.floor(seconds / 60);
@@ -368,18 +454,16 @@
     return m + ":" + (s < 10 ? "0" : "") + s;
   }
 
-  // Play / Pause
   playBtn.addEventListener('click', function() {
     if (bgMusic.paused) {
       bgMusic.play();
-      playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Иконка Паузы
+      playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
     } else {
       bgMusic.pause();
-      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Иконка Плея
+      playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
     }
   });
 
-  // Обновление ползунка перемотки и времени при воспроизведении
   bgMusic.addEventListener('timeupdate', function() {
     if (!isNaN(bgMusic.duration)) {
       var percent = (bgMusic.currentTime / bgMusic.duration) * 100;
@@ -388,12 +472,10 @@
     }
   });
 
-  // Установка общей длительности при загрузке
   bgMusic.addEventListener('loadedmetadata', function() {
     totalTimeEl.textContent = formatTime(bgMusic.duration);
   });
 
-  // Перемотка трека
   seekSlider.addEventListener('input', function() {
     if (!isNaN(bgMusic.duration)) {
       var seekTo = (this.value / 100) * bgMusic.duration;
@@ -401,15 +483,13 @@
     }
   });
 
-  // Громкость
   volumeSlider.addEventListener('input', function() {
     bgMusic.volume = this.value;
   });
-  bgMusic.volume = volumeSlider.value; // Начальная громкость
+  bgMusic.volume = volumeSlider.value;
 
 
   // --- ЛОГИКА КНОПКИ РЕЗУЛЬТАТА ---
-
   rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
     rollBtn.textContent = "Решаем...";
@@ -429,7 +509,6 @@
   });
 
   function showFinalResult() {
-    // Шансы 50/50
     var isYes = Math.random() < 0.5;
     var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
     var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -442,11 +521,21 @@
       resTitle.style.color = "#b46aff";
       resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub";
+      
+      // Показываем оранжевую кнопку FACEIT
+      faceitBtn.style.display = 'block'; 
+      // Прячем красную кнопку YouTube
+      youtubeBtn.style.display = 'none'; 
     } else {
       resTitle.textContent = "НЕ РЕГАТЬ";
       resTitle.style.color = "#ff4444";
       resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub no";
+      
+      // Прячем оранжевую кнопку FACEIT
+      faceitBtn.style.display = 'none'; 
+      // Показываем красную кнопку YouTube
+      youtubeBtn.style.display = 'block'; 
     }
 
     overlay.classList.add('active');
