@@ -77,14 +77,15 @@
   .center-gif {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 55%;
     transform: translate(-50%, -50%);
-    width: 280px;
-    height: 280px;
+    max-width: 300px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
     border-radius: 20px;
-    object-fit: cover;
-    box-shadow: 0 0 40px rgba(180, 106, 255, 0.3);
-    border: 2px solid rgba(180, 106, 255, 0.5);
+    box-shadow: 0 0 40px rgba(180, 106, 255, 0.4);
+    border: 2px solid rgba(180, 106, 255, 0.6);
     z-index: 1;
   }
 
@@ -179,6 +180,57 @@
     z-index: 3;
   }
 
+  /* Ползунок громкости */
+  .volume-container {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .volume-container svg {
+    width: 20px;
+    height: 20px;
+    fill: #b46aff;
+  }
+
+  /* Стилизация самого ползунка (input range) */
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100px;
+    background: transparent;
+  }
+  
+  input[type=range]:focus {
+    outline: none;
+  }
+  
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #444;
+    border-radius: 2px;
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #b46aff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -5px;
+    box-shadow: 0 0 10px rgba(180, 106, 255, 0.8);
+  }
+
   /* Оверлей результата */
   .result-overlay {
     position: absolute;
@@ -208,7 +260,7 @@
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
     border: 2px solid rgba(255,255,255,0.1);
     display: none;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .result-title {
@@ -238,6 +290,7 @@
     .text-col::before { display: none; }
     .center-gif { position: relative; top: 0; left: 0; transform: none; margin: 20px auto; display: block; width: 200px; height: 200px; }
     .bottom-text { font-size: 50px; }
+    .volume-container { bottom: 10px; right: 50%; transform: translateX(50%); }
   }
 </style>
 </head>
@@ -278,9 +331,22 @@
     <button id="rollBtn" class="action-btn">Крутить судьбу</button>
   </div>
 
-  <!-- Подпись -->
   <div class="made-by">made by qwe1re</div>
 
+  <!-- НЕВИДИМЫЙ АУДИОПЛЕЕР -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ПАНЕЛЬ ГРОМКОСТИ -->
+  <div class="volume-container">
+    <svg viewBox="0 0 24 24">
+      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4">
+  </div>
+
+  <!-- ОВЕРЛЕЙ РЕЗУЛЬТАТА -->
   <div id="resultOverlay" class="result-overlay">
     <img id="resImg" class="result-image" src="" alt="Результат">
     <div id="resTitle" class="result-title"></div>
@@ -295,14 +361,16 @@
   var rollBtn = document.getElementById('rollBtn');
   var overlay = document.getElementById('resultOverlay');
   var closeBtn = document.getElementById('closeBtn');
+  var bgMusic = document.getElementById('bgMusic');
+  var volumeSlider = document.getElementById('volumeSlider');
   
   var resImg = document.getElementById('resImg');
   var resTitle = document.getElementById('resTitle');
   var resSub = document.getElementById('resSub');
 
-  // Ссылки на картинки для ДА и НЕТ
-  var YES_IMAGE_URL = "https://i.ibb.co/6P5KqK0/purple-girl.jpg"; 
-  var NO_IMAGE_URL  = "https://i.ibb.co/0yJzVq3/anime-face.jpg";  
+  // ТВОИ КАРТИНКИ ДЛЯ РЕЗУЛЬТАТОВ
+  var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; 
+  var NO_IMAGE_URL  = "https://i.pinimg.com/736x/f3/d7/47/f3d747fe35ddb4d1353ece896f566d1f.jpg";  
   
   var quotes = [
     "«Абсолютный!»", "«Запоминайте цитату…»", "«Муваюсь так жёстко!»",
@@ -325,12 +393,32 @@
     "«Вы недооцениваете мою силу»", "«Абсолютные всегда побеждают»"
   ];
 
+  // Управление громкостью через ползунок
+  volumeSlider.addEventListener('input', function() {
+    bgMusic.volume = this.value;
+  });
+
   rollBtn.addEventListener('click', function() {
+    // Запуск музыки
+    if (bgMusic.paused) {
+      bgMusic.volume = volumeSlider.value; 
+      
+      if (bgMusic.readyState >= 1) {
+        setRandomStartTime();
+      } else {
+        bgMusic.addEventListener('loadedmetadata', setRandomStartTime, { once: true });
+      }
+
+      bgMusic.play().catch(function(error) {
+        console.log("Музыка не найдена или заблокирована браузером.");
+      });
+    }
+
     rollBtn.disabled = true;
     rollBtn.textContent = "Решаем...";
 
     var ticks = 0;
-    var maxTicks = 25; // Увеличили количество тиков, чтобы анимация длилась дольше
+    var maxTicks = 25;
     
     var spin = setInterval(function() {
       ticks++;
@@ -340,11 +428,22 @@
         rollBtn.disabled = false;
         rollBtn.textContent = "Крутить судьбу";
       }
-    }, 80); // Интервал между тиками (80 мс)
+    }, 80);
   });
 
+  // Случайный старт (52 минуты)
+  function setRandomStartTime() {
+    var duration = bgMusic.duration;
+    // 52 минуты = 52 * 60 = 3120 секунд
+    var maxTime = Math.min(3120, duration - 5); 
+    
+    if (maxTime > 0) {
+      var randomTime = Math.random() * maxTime;
+      bgMusic.currentTime = randomTime;
+    }
+  }
+
   function showFinalResult() {
-    // Шансы 50 на 50
     var isYes = Math.random() < 0.5;
     var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
     var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
