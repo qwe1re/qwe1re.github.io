@@ -1,146 +1,304 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>qwe1re | Links</title>
-    <style>
-        :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --text-color: #c9d1d9;
-            --accent-sc: #ff5500;
-            --accent-tg: #229ED9;
-            --accent-ds: #5865F2;
-            --accent-st: #ffffff;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            overflow: hidden; /* Убирает дергание при анимации */
-        }
-
-        .container {
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-        }
-
-        /* Анимация для заголовка и фото */
-        .profile-header {
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        .profile-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #30363d, #6e7681);
-            margin: 0 auto 20px;
-            border: 3px solid #30363d;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            margin: 0 0 10px;
-            color: white;
-        }
-
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 25px;
-        }
-
-        /* Базовое состояние кнопок (невидимы до анимации) */
-        .link-card {
-            opacity: 0;
-            transform: translateY(20px);
-            background-color: var(--card-bg);
-            padding: 16px;
-            border-radius: 15px;
-            text-decoration: none;
-            color: white;
-            font-weight: 500;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #30363d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: slideUp 0.6s ease forwards;
-        }
-
-        /* Задержки для каждой кнопки, чтобы они появлялись по очереди */
-        .link-card:nth-child(1) { animation-delay: 0.2s; }
-        .link-card:nth-child(2) { animation-delay: 0.3s; }
-        .link-card:nth-child(3) { animation-delay: 0.4s; }
-        .link-card:nth-child(4) { animation-delay: 0.5s; }
-
-        .link-card:hover {
-            transform: scale(1.02) !important;
-            background-color: #21262d;
-            border-color: #8b949e;
-        }
-
-        .tg:hover { box-shadow: 0 0 15px rgba(34, 158, 217, 0.3); }
-        .sc:hover { box-shadow: 0 0 15px rgba(255, 85, 0, 0.3); }
-        .ds:hover { box-shadow: 0 0 15px rgba(88, 101, 242, 0.3); }
-        .st:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
-
-        /* Описание анимаций */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .footer {
-            margin-top: 40px;
-            font-size: 0.85rem;
-            opacity: 0.4;
-            animation: fadeIn 1s ease forwards;
-            animation-delay: 0.8s;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гоночки 🏎️</title>
+<style>
+  body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #eee;
+    user-select: none;
+  }
+  canvas {
+    border: 2px solid #444;
+    border-radius: 8px;
+    background: #222;
+    max-width: 95vw;
+    touch-action: none;
+  }
+  .hud {
+    margin-top: 10px;
+    font-size: 18px;
+    display: flex;
+    gap: 24px;
+  }
+  .controls {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #888;
+  }
+  #overlay {
+    position: absolute;
+    text-align: center;
+    background: rgba(0,0,0,0.75);
+    padding: 20px 30px;
+    border-radius: 12px;
+    display: none;
+  }
+  #overlay h2 { margin: 0 0 10px; }
+  button {
+    padding: 8px 18px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background: #4caf50;
+    color: #fff;
+    cursor: pointer;
+  }
+  button:hover { background: #66bb6a; }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="profile-header">
-            <img src="https://i.pinimg.com/736x/c5/c8/77/c5c8774d52ba49909c097644467c20ce.jpg" class="profile-img">
-            <h1>qwe1re</h1>
-        </div>
-        
-        <div class="links">
-            <a href="https://t.me/Dontwritemeanymorepls" class="link-card tg" target="_blank">Telegram</a>
-            <a href="https://soundcloud.com/qweire" class="link-card sc" target="_blank">SoundCloud</a>
-            <a href="https://discord.gg/PmK2zEqN" class="link-card ds" target="_blank">Discord server</a>
-            <a href="https://steamcommunity.com/id/qweire" class="link-card st" target="_blank">Steam Profile</a>
-        </div>
+<canvas id="game" width="400" height="600"></canvas>
 
-        <div class="footer">
-            2026 • qwe1re x blarfik <33 (Kayni pidorasina)
-        </div>
-    </div>
+<div class="hud">
+  <span>Счёт: <b id="score">0</b></span>
+  <span>Рекорд: <b id="best">0</b></span>
+</div>
+<div class="controls">← → или A/D — перестроиться • Пробел — пауза</div>
+
+<div id="overlay">
+  <h2>💥 Авария!</h2>
+  <p>Счёт: <b id="finalScore">0</b></p>
+  <button onclick="restart()">Заново</button>
+</div>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+const W = canvas.width;
+const H = canvas.height;
+
+// Дорога
+const ROAD_LEFT = 60;
+const ROAD_RIGHT = W - 60;
+const LANES = 4;
+const LANE_W = (ROAD_RIGHT - ROAD_LEFT) / LANES;
+
+// Игрок
+const player = {
+  w: 34,
+  h: 60,
+  lane: 1,
+  x: 0,
+  y: H - 100,
+  speed: 0
+};
+
+// Состояние игры
+let obstacles = [];
+let roadOffset = 0;
+let score = 0;
+let best = parseInt(localStorage.getItem('raceBest') || '0');
+let gameOver = false;
+let paused = false;
+let lastTime = 0;
+let spawnTimer = 0;
+let speed = 4;
+
+document.getElementById('best').textContent = best;
+
+// Управление
+const keys = {};
+document.addEventListener('keydown', e => {
+  keys[e.key.toLowerCase()] = true;
+  if (e.key === ' ') { e.preventDefault(); if (!gameOver) paused = !paused; }
+  if (e.key === 'ArrowLeft' || e.key === 'a') move(-1);
+  if (e.key === 'ArrowRight' || e.key === 'd') move(1);
+});
+document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+// Свайпы для мобильных
+let touchX = null;
+canvas.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+canvas.addEventListener('touchend', e => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 30) move(dx > 0 ? 1 : -1);
+  touchX = null;
+});
+
+function move(dir) {
+  if (gameOver || paused) return;
+  player.lane = Math.max(0, Math.min(LANES - 1, player.lane + dir));
+}
+
+function laneCenter(lane) {
+  return ROAD_LEFT + LANE_W * lane + LANE_W / 2;
+}
+
+// Спавн препятствий
+function spawnObstacle() {
+  const lane = Math.floor(Math.random() * LANES);
+  const w = 34 + Math.random() * 10;
+  const h = 55 + Math.random() * 25;
+  obstacles.push({
+    x: laneCenter(lane) - w / 2,
+    y: -h,
+    w, h,
+    lane
+  });
+}
+
+// Обновление
+function update(dt) {
+  if (gameOver || paused) return;
+
+  // Плавное перемещение игрока в нужную полосу
+  const targetX = laneCenter(player.lane) - player.w / 2;
+  player.x += (targetX - player.x) * Math.min(1, dt * 0.015);
+
+  // Скорость растёт со временем
+  speed = 4 + score * 0.02;
+  roadOffset = (roadOffset + speed * dt * 0.06) % 40;
+
+  // Спавн
+  spawnTimer -= dt;
+  if (spawnTimer <= 0) {
+    spawnObstacle();
+    spawnTimer = Math.max(350, 900 - score * 3);
+  }
+
+  // Движение препятствий
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    const o = obstacles[i];
+    o.y += speed * dt * 0.06;
+    if (o.y > H) {
+      obstacles.splice(i, 1);
+      score++;
+      document.getElementById('score').textContent = score;
+    }
+  }
+
+  // Коллизии (AABB с небольшим отступом)
+  for (const o of obstacles) {
+    if (
+      player.x + player.w - 6 > o.x &&
+      player.x + 6 < o.x + o.w &&
+      player.y + player.h - 6 > o.y &&
+      player.y + 6 < o.y + o.h
+    ) {
+      endGame();
+      return;
+    }
+  }
+}
+
+function endGame() {
+  gameOver = true;
+  if (score > best) {
+    best = score;
+    localStorage.setItem('raceBest', best);
+    document.getElementById('best').textContent = best;
+  }
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('overlay').style.display = 'block';
+}
+
+// Отрисовка
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Трава/фон
+  ctx.fillStyle = '#2b2b2b';
+  ctx.fillRect(0, 0, W, H);
+
+  // Дорога
+  ctx.fillStyle = '#3a3a3a';
+  ctx.fillRect(ROAD_LEFT, 0, ROAD_RIGHT - ROAD_LEFT, H);
+
+  // Края
+  ctx.fillStyle = '#e0e0e0';
+  ctx.fillRect(ROAD_LEFT - 4, 0, 4, H);
+  ctx.fillRect(ROAD_RIGHT, 0, 4, H);
+
+  // Разметка между полосами
+  ctx.fillStyle = '#f0c040';
+  for (let i = 1; i < LANES; i++) {
+    const x = ROAD_LEFT + LANE_W * i - 2;
+    for (let y = -40 + roadOffset; y < H; y += 40) {
+      ctx.fillRect(x, y, 4, 20);
+    }
+  }
+
+  // Препятствия (машины)
+  for (const o of obstacles) {
+    ctx.fillStyle = '#e74c3c';
+    roundRect(o.x, o.y, o.w, o.h, 6);
+    ctx.fillStyle = '#c0392b';
+    ctx.fillRect(o.x + 6, o.y + 8, o.w - 12, 14);
+    ctx.fillStyle = '#7f1d1d';
+    ctx.fillRect(o.x + 6, o.y + o.h - 22, o.w - 12, 14);
+  }
+
+  // Игрок
+  ctx.fillStyle = '#3498db';
+  roundRect(player.x, player.y, player.w, player.h, 6);
+  ctx.fillStyle = '#1f6fa8';
+  ctx.fillRect(player.x + 6, player.y + 10, player.w - 12, 16);
+  ctx.fillStyle = '#7fc8f8';
+  ctx.fillRect(player.x + 6, player.y + player.h - 24, player.w - 12, 14);
+
+  // Пауза
+  if (paused && !gameOver) {
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 28px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('ПАУЗА', W / 2, H / 2);
+  }
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+  ctx.fill();
+}
+
+// Главный цикл
+function loop(t) {
+  const dt = Math.min(50, t - lastTime || 16);
+  lastTime = t;
+  update(dt);
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function restart() {
+  obstacles = [];
+  score = 0;
+  speed = 4;
+  spawnTimer = 0;
+  roadOffset = 0;
+  player.lane = 1;
+  player.x = laneCenter(1) - player.w / 2;
+  gameOver = false;
+  paused = false;
+  document.getElementById('score').textContent = 0;
+  document.getElementById('overlay').style.display = 'none';
+  lastTime = 0;
+}
+
+// Старт
+player.x = laneCenter(1) - player.w / 2;
+requestAnimationFrame(loop);
+</script>
 
 </body>
 </html>
