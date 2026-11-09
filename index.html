@@ -3,181 +3,406 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Удачный день для CS на FACEIT?</title>
+<title>ТРЕНДЫ | КС на FACEIT</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600&display=swap');
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
+    background-color: #000;
+    /* Имитация фона с картинки (тёмно-серый с полосами) */
+    background-image: repeating-linear-gradient(90deg, #111 0px, #111 2px, #0a0a0a 2px, #0a0a0a 4px);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    color: #fff;
     padding: 20px;
+    overflow-x: hidden;
   }
 
-  .container {
-    text-align: center;
-    max-width: 560px;
+  /* Основная рамка */
+  .main-frame {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 40px 30px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 1200px;
+    background-color: #050505;
+    /* Сетка на фоне (как на картинке) */
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    border-radius: 30px;
+    border: 2px solid #888;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.9);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
   }
 
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-    line-height: 1.4;
-    background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  #rollBtn {
-    font-size: 1.2rem;
-    padding: 16px 40px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: bold;
+  /* Верхнее меню */
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
     color: #fff;
-    background: linear-gradient(135deg, #e94560, #f39c12);
-    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    z-index: 10;
   }
 
-  #rollBtn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(233,69,96,0.6); }
-  #rollBtn:active { transform: translateY(0) scale(0.98); }
-  #rollBtn:disabled { opacity: 0.6; cursor: wait; }
-
-  .result {
-    margin-top: 30px;
-    padding: 25px;
-    border-radius: 16px;
-    animation: popIn 0.4s ease;
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
   }
 
-  .result.hidden { display: none; }
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .nav-icon:hover { opacity: 0.7; }
 
-  .result-icon img {
-    max-width: 240px;
-    max-height: 240px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    object-fit: cover;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  /* Поиск */
+  .search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 6px 12px;
+    background: rgba(0,0,0,0.5);
+  }
+  .search-box input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    margin-left: 8px;
+    width: 150px;
+  }
+  .search-box input::placeholder { color: #888; }
+
+  /* Главный заголовок ТРЕНДЫ */
+  .hero-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(80px, 15vw, 180px);
+    line-height: 0.8;
+    color: #8cf63a; /* Кислотно-зеленый */
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
-  .result-icon.emoji { font-size: 5rem; line-height: 1; margin-bottom: 8px; }
-
-  .result h2 { font-size: 1.6rem; margin-bottom: 8px; }
-  .result p { opacity: 0.85; }
-
-  .result.yes { background: rgba(107, 203, 119, 0.15); border: 2px solid #6bcb77; }
-  .result.yes h2 { color: #6bcb77; }
-  .result.no { background: rgba(255, 107, 107, 0.15); border: 2px solid #ff6b6b; }
-  .result.no h2 { color: #ff6b6b; }
-
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+  /* Центральный блок с планетой и текстом */
+  .content-area {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 250px; /* Отступ под ТРЕНДЫ */
+    margin-bottom: 60px;
+    z-index: 2;
   }
+
+  /* Левая и правая колонки с мелким текстом */
+  .text-col {
+    width: 25%;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .text-col.right { text-align: right; }
+
+  /* Картинка по центру (планета) */
+  .center-image-container {
+    position: absolute;
+    left: 50%;
+    bottom: -20px;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    z-index: -1;
+    /* Чтобы картинка была за текстом, но перед ТРЕНДЫ */
+  }
+  .center-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+  }
+
+  /* Нижний текст (ВЕБ + ДИЗАЙНА / КС + FACEIT) */
+  .bottom-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(40px, 8vw, 100px);
+    font-weight: 700;
+    line-height: 0.9;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 3;
+  }
+
+  .text-left { color: #fff; display: flex; align-items: center; gap: 20px;}
+  .text-left .plus { color: #8cf63a; font-size: 1.2em; }
+  .text-right { color: #fff; text-align: right; }
+
+  /* Наша кнопка, стилизованная под дизайн */
+  .action-btn-wrapper {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  .action-btn {
+    background: #8cf63a;
+    color: #000;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(140, 246, 58, 0.4);
+    transition: all 0.3s;
+  }
+  .action-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(140, 246, 58, 0.8);
+  }
+
+  /* Блок результата */
+  .result-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .result-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .result-image {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: none;
+  }
+  
+  .result-emoji {
+    font-size: 100px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .result-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 60px;
+    color: #8cf63a;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .result-sub {
+    font-size: 18px;
+    color: #ccc;
+    text-align: center;
+    max-width: 600px;
+  }
+  .result-sub.no { color: #ff4444; }
+
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>🎮 Удачный сегодня день для CS на FACEIT?</h1>
 
-  <!-- ===== ВСТАВЬ СВОИ ССЫЛКИ НА КАРТИНКИ ЗДЕСЬ ===== -->
-  <img id="yesImage" src="" alt="" style="display:none"
-       data-src="https://i.imgur.com/ВАША_ССЫЛКА_ДА.png">
-  <img id="noImage" src="" alt="" style="display:none"
-       data-src="https://i.imgur.com/ВАША_ССЫЛКА_НЕТ.png">
-  <!-- ================================================= -->
-
-  <button id="rollBtn" type="button">Крутить судьбу 🎲</button>
-
-  <div id="result" class="result hidden">
-    <div id="resultIcon" class="result-icon"></div>
-    <h2 id="resultText"></h2>
-    <p id="resultSub"></p>
+<div class="main-frame">
+  
+  <!-- Верхнее меню -->
+  <div class="top-nav">
+    <div class="nav-left">
+      <!-- Иконка "Птица/Логотип" -->
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 7L10 18L3 11L6 8L10 12L18 4L21 7Z"/></svg>
+      <!-- Иконка "Дом" -->
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <!-- Иконка "Лупа" -->
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <!-- Иконка "Ютуб/Видео" -->
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM8 15l7-4-7-4z"/></svg>
+    </div>
+    
+    <div class="nav-right">
+      <!-- Поиск -->
+      <div class="search-box">
+        <svg style="width:16px;height:16px;fill:#888;" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" placeholder="Поиск">
+      </div>
+      <!-- Иконка "Профиль" -->
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
   </div>
+
+  <!-- Заголовок -->
+  <div class="hero-title">ТРЕНДЫ</div>
+
+  <!-- Центральный блок -->
+  <div class="content-area">
+    
+    <!-- Левый текст -->
+    <div class="text-col">
+      Стиль вобрал в себя<br>
+      ломанные линии,<br>
+      минимализм и рваный<br>
+      ним неожиданные акценты.
+    </div>
+
+    <!-- Картинка по центру (Вставь свою ссылку сюда) -->
+    <div class="center-image-container">
+      <!-- ВМЕСТО ПЛАНЕТЫ МОЖНО ВСТАВИТЬ ЛЮБУЮ КАРТИНКУ (например, сферу или логотип CS) -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Earth_Western_Hemisphere_transparent_background.png/600px-Earth_Western_Hemisphere_transparent_background.png" alt="Планета">
+    </div>
+
+    <!-- Правый текст -->
+    <div class="text-col right">
+      Возникнув как реакция на перенасыщение<br>
+      хаотические композиции последних лет, он<br>
+      обращает внимание на легкость и сдержанную<br>
+      выразительность.
+    </div>
+  </div>
+
+  <!-- Нижний текст -->
+  <div class="bottom-text">
+    <div class="text-left">
+      КС <span class="plus">+</span>
+    </div>
+    <div class="text-right">
+      FACEIT
+    </div>
+  </div>
+
+  <!-- Кнопка (спрятана за оверлеем, но выезжает поверх) -->
+  <div class="action-btn-wrapper">
+    <button id="rollBtn" class="action-btn">Удачный день?</button>
+  </div>
+
+  <!-- Оверлей с результатом -->
+  <div id="resultOverlay" class="result-overlay">
+    <!-- Сюда подставляются картинки (если заданы) -->
+    <img id="resImg" class="result-image" src="" alt="">
+    <!-- Сюда подставляются эмодзи (если картинок нет) -->
+    <div id="resEmoji" class="result-emoji"></div>
+    
+    <div id="resTitle" class="result-title"></div>
+    <div id="resSub" class="result-sub"></div>
+    
+    <button id="closeBtn" class="action-btn" style="margin-top: 30px; background: transparent; border: 1px solid #8cf63a; color: #8cf63a; box-shadow: none;">Закрыть</button>
+  </div>
+
 </div>
 
 <script>
-(function () {
-  var rollBtn    = document.getElementById('rollBtn');
-  var resultDiv  = document.getElementById('result');
-  var resultIcon = document.getElementById('resultIcon');
-  var resultText = document.getElementById('resultText');
-  var resultSub  = document.getElementById('resultSub');
+(function() {
+  var rollBtn = document.getElementById('rollBtn');
+  var overlay = document.getElementById('resultOverlay');
+  var closeBtn = document.getElementById('closeBtn');
+  
+  var resImg = document.getElementById('resImg');
+  var resEmoji = document.getElementById('resEmoji');
+  var resTitle = document.getElementById('resTitle');
+  var resSub = document.getElementById('resSub');
 
-  // Ссылки на картинки берём из data-src
-  var YES_URL = document.getElementById('yesImage').getAttribute('data-src') || '';
-  var NO_URL  = document.getElementById('noImage').getAttribute('data-src') || '';
+  // ==========================================
+  // ВСТАВЬ ССЫЛКИ НА СВОИ КАРТИНКИ ЗДЕСЬ:
+  var YES_IMAGE_URL = ""; // Например: "https://i.imgur.com/abc123.png"
+  var NO_IMAGE_URL  = ""; // Например: "https://i.imgur.com/xyz789.png"
+  // ==========================================
 
-  // Проверяем, что ссылка реально задана (не заглушка)
-  function validUrl(url) {
-    return url && url.indexOf('ВАША_ССЫЛКА') === -1 && url.trim() !== '';
-  }
-
-  function showTempResult(isYes) {
-    resultDiv.classList.remove('hidden', 'yes', 'no');
-    resultDiv.classList.add(isYes ? 'yes' : 'no');
-    resultIcon.className = 'result-icon emoji';
-    resultIcon.textContent = isYes ? '✅' : '❌';
-    resultText.textContent = isYes ? 'ДА' : 'НЕТ';
-    resultSub.textContent  = '...';
-  }
-
-  function finalResult() {
-    // 30% — ДА, 70% — НЕТ
-    var isYes = Math.random() < 0.3;
-
-    resultDiv.classList.remove('yes', 'no', 'hidden');
-    resultDiv.classList.add(isYes ? 'yes' : 'no');
-
-    var url = isYes ? YES_URL : NO_URL;
-
-    if (validUrl(url)) {
-      resultIcon.className = 'result-icon';
-      resultIcon.innerHTML = '<img src="' + url + '" alt="">';
-    } else {
-      resultIcon.className = 'result-icon emoji';
-      resultIcon.textContent = isYes ? '🏆' : '💀';
-    }
-
-    if (isYes) {
-      resultText.textContent = 'ДА, УДАЧНЫЙ ДЕНЬ!';
-      resultSub.textContent  = 'Заходи в FACEIT, сегодня твой день! 🔥';
-    } else {
-      resultText.textContent = 'НЕТ, НЕ СЕГОДНЯ';
-      resultSub.textContent  = 'Лучше отдохни, сегодня не прёт 😅';
-    }
-  }
-
-  rollBtn.addEventListener('click', function () {
+  rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
-    resultDiv.classList.add('hidden');
+    rollBtn.textContent = "Крутим...";
 
     var ticks = 0;
     var maxTicks = 14;
-    var spin = setInterval(function () {
-      showTempResult(Math.random() < 0.3);
+    
+    // Анимация перебора
+    var spin = setInterval(function() {
       ticks++;
       if (ticks >= maxTicks) {
         clearInterval(spin);
-        finalResult();
+        showFinalResult();
         rollBtn.disabled = false;
+        rollBtn.textContent = "Удачный день?";
       }
     }, 90);
+  });
+
+  function showFinalResult() {
+    // 30% - Да, 70% - Нет
+    var isYes = Math.random() < 0.3;
+    var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
+
+    // Очищаем предыдущие
+    resImg.style.display = 'none';
+    resEmoji.style.display = 'none';
+
+    // Проверяем, задана ли картинка
+    if (imgUrl && imgUrl.trim() !== "") {
+      resImg.src = imgUrl;
+      resImg.style.display = 'block';
+    } else {
+      resEmoji.textContent = isYes ? "🏆" : "💀";
+      resEmoji.style.display = 'block';
+    }
+
+    if (isYes) {
+      resTitle.textContent = "ДА, УДАЧНЫЙ!";
+      resTitle.style.color = "#8cf63a"; // Зеленый
+      resSub.textContent = "Заходи в FACEIT, сегодня твой день! 🔥";
+      resSub.className = "result-sub";
+    } else {
+      resTitle.textContent = "НЕТ, НЕ СЕГОДНЯ";
+      resTitle.style.color = "#ff4444"; // Красный
+      resSub.textContent = "Лучше отдохни, сегодня не прёт 😅";
+      resSub.className = "result-sub no";
+    }
+
+    overlay.classList.add('active');
+  }
+
+  closeBtn.addEventListener('click', function() {
+    overlay.classList.remove('active');
   });
 })();
 </script>
