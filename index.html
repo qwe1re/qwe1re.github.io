@@ -25,7 +25,7 @@
   /* Увеличили рамку и отступы */
   .main-frame {
     width: 100%;
-    max-width: 1300px; /* Было 1200 */
+    max-width: 1300px;
     background-color: #050505;
     background-image: 
       linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -34,13 +34,13 @@
     border-radius: 30px;
     border: 2px solid #888;
     box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.9);
-    padding: 60px; /* Было 40 */
+    padding: 50px;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 700px; /* Сделали выше */
+    min-height: 750px;
   }
 
   /* Главный заголовок */
@@ -48,11 +48,11 @@
     font-family: 'Oswald', sans-serif;
     font-size: clamp(60px, 11vw, 150px);
     line-height: 0.8;
-    color: #b46aff; /* Заменили зеленый на фиолетовый */
+    color: #b46aff;
     text-transform: uppercase;
     letter-spacing: -2px;
     position: absolute;
-    top: 80px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
@@ -68,8 +68,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 200px;
-    margin-bottom: 60px;
+    margin-top: 180px;
+    margin-bottom: 20px;
     z-index: 2;
     flex-grow: 1;
   }
@@ -86,7 +86,6 @@
     padding-left: 15px;
   }
   
-  /* Фиолетовая полоска слева */
   .text-col::before {
     content: '';
     position: absolute;
@@ -119,7 +118,7 @@
     text-transform: uppercase;
     position: relative;
     z-index: 3;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
   .text-left { color: #fff; display: flex; align-items: center; gap: 20px;}
@@ -131,6 +130,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    margin-bottom: 40px;
+    z-index: 3;
   }
 
   .action-btn {
@@ -152,11 +153,25 @@
     box-shadow: 0 0 40px rgba(180, 106, 255, 0.8);
   }
 
+  /* Контейнер для Spotify */
+  .spotify-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    z-index: 3;
+    position: relative;
+  }
+  
+  .spotify-wrapper iframe {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
   /* Блок результата */
   .result-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
@@ -173,7 +188,6 @@
     pointer-events: auto;
   }
   
-  /* Стили для картинок */
   .result-image {
     max-width: 320px;
     max-height: 320px;
@@ -204,6 +218,15 @@
   }
   .result-sub.no { color: #ff4444; }
 
+  @media (max-width: 768px) {
+    .main-frame { padding: 30px 20px; min-height: auto; }
+    .hero-title { position: relative; top: 0; font-size: 60px; white-space: normal; margin-bottom: 20px; }
+    .content-area { margin-top: 20px; flex-direction: column; gap: 30px; }
+    .text-col { width: 100%; text-align: center; padding: 0; }
+    .text-col::before { display: none; }
+    .bottom-text { font-size: 50px; }
+    .spotify-wrapper iframe { height: 152px; }
+  }
 </style>
 </head>
 <body>
@@ -216,14 +239,12 @@
   <!-- Центральный блок с цитатами -->
   <div class="content-area">
     
-    <!-- Левая цитата -->
     <div class="text-col">
       «Вы вообще понимаете,<br>
       кто перед вами<br>
       находится?»
     </div>
 
-    <!-- Правая цитата -->
     <div class="text-col right">
       «Это был тактический мув,<br>
       вы ничего<br>
@@ -244,6 +265,19 @@
   <!-- Кнопка -->
   <div class="action-btn-wrapper">
     <button id="rollBtn" class="action-btn">Крутить судьбу</button>
+  </div>
+
+  <!-- Встроенный Spotify Плеер -->
+  <div class="spotify-wrapper">
+    <iframe style="border-radius:12px" 
+            src="https://open.spotify.com/embed/playlist/2K2rmhFzQbyP6HSSzQS3rN?utm_source=generator&theme=0" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+    </iframe>
   </div>
 
   <!-- Оверлей с результатом -->
@@ -269,48 +303,30 @@
   var resSub = document.getElementById('resSub');
 
   // ==========================================
-  // ССЫЛКИ НА КАРТИНКИ (если загрузишь их на GitHub, 
-  // просто замени эти ссылки на свои)
+  // ССЫЛКИ НА КАРТИНКИ
   // ==========================================
-  var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; // Фото для ДА
-  var NO_IMAGE_URL  = "https://i.pinimg.com/736x/f3/d7/47/f3d747fe35ddb4d1353ece896f566d1f.jpg";  // Фото для НЕТ
+  var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; 
+  var NO_IMAGE_URL  = "https://i.pinimg.com/736x/f3/d7/47/f3d747fe35ddb4d1353ece896f566d1f.jpg";  
   
-  // Твой список цитат
   var quotes = [
-    "«Абсолютный!»",
-    "«Запоминайте цитату…»",
-    "«Муваюсь так жёстко!»",
-    "«Вы зашли на стрим к абсолютному»",
-    "«Ты что, глупый?!»",
-    "«Куда ты смотришь, боже?!»",
-    "«Да как он это делает?!»",
+    "«Абсолютный!»", "«Запоминайте цитату…»", "«Муваюсь так жёстко!»",
+    "«Вы зашли на стрим к абсолютному»", "«Ты что, глупый?!»",
+    "«Куда ты смотришь, боже?!»", "«Да как он это делает?!»",
     "«Если тебе тяжело идти — значит, ты тащишь мешок картошки»",
     "«Неважно, кто перед тобой. Важно, сколько у тебя патронов»",
     "«Лучше быть абсолютным в чате, чем относительным по жизни»",
-    "«Жду всех абсолютных в группе»",
-    "«Да он с софтом играет!»",
-    "«Вы вообще понимаете, кто перед вами находится?»",
-    "«Я двигаюсь на уверенном»",
-    "«Цитата Ская, запоминайте!»",
-    "«Сука знает, что я в деле!»",
-    "«Я включаю режим абсолютного»",
-    "«Это был тактический мув, вы ничего не понимаете»",
-    "«Чат, вы видите этот абсурд?»",
-    "«Да как это не залетело, я же ровно в голову целился!»",
-    "«Всё, я в тильте, не трогайте меня»",
-    "«Мой микрофон не выдерживает этой гениальности»",
-    "«Это не я слил, это пинг»",
-    "«Вы думали я проиграл? Это был байт!»",
-    "«Я читаю эту игру как открытую книгу»",
-    "«Где мой хедшот, игра сломалась»",
-    "«Это уровень абсолютного, вам не понять»",
-    "«Я просто на голову выше всех в этом лобби»",
-    "«Это чистый лак, ему просто повезло»",
-    "«Я не проигрываю, я просто даю им шанс»",
-    "«Мой прайм-тайм начался»",
-    "«Это абсолютная доминация»",
-    "«Вы недооцениваете мою силу»",
-    "«Абсолютные всегда побеждают»"
+    "«Жду всех абсолютных в группе»", "«Да он с софтом играет!»",
+    "«Вы вообще понимаете, кто перед вами находится?»", "«Я двигаюсь на уверенном»",
+    "«Цитата Ская, запоминайте!»", "«Сука знает, что я в деле!»",
+    "«Я включаю режим абсолютного»", "«Это был тактический мув, вы ничего не понимаете»",
+    "«Чат, вы видите этот абсурд?»", "«Да как это не залетело, я же ровно в голову целился!»",
+    "«Всё, я в тильте, не трогайте меня»", "«Мой микрофон не выдерживает этой гениальности»",
+    "«Это не я слил, это пинг»", "«Вы думали я проиграл? Это был байт!»",
+    "«Я читаю эту игру как открытую книгу»", "«Где мой хедшот, игра сломалась»",
+    "«Это уровень абсолютного, вам не понять»", "«Я просто на голову выше всех в этом лобби»",
+    "«Это чистый лак, ему просто повезло»", "«Я не проигрываю, я просто даю им шанс»",
+    "«Мой прайм-тайм начался»", "«Это абсолютная доминация»",
+    "«Вы недооцениваете мою силу»", "«Абсолютные всегда побеждают»"
   ];
 
   rollBtn.addEventListener('click', function() {
@@ -332,11 +348,8 @@
   });
 
   function showFinalResult() {
-    // 30% - Да, 70% - Нет
     var isYes = Math.random() < 0.3;
     var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
-    
-    // Выбираем случайную цитату из списка
     var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
     resImg.style.display = 'block';
