@@ -39,9 +39,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 700px;
+    min-height: 750px;
   }
 
+  /* Главный заголовок */
   .hero-title {
     font-family: 'Oswald', sans-serif;
     font-size: clamp(60px, 11vw, 150px);
@@ -50,7 +51,7 @@
     text-transform: uppercase;
     letter-spacing: -2px;
     position: absolute;
-    top: 70px;
+    top: 60px;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
@@ -60,17 +61,34 @@
     text-align: center;
   }
 
+  /* Центральный блок */
   .content-area {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 180px;
-    margin-bottom: 60px;
+    margin-top: 160px;
+    margin-bottom: 20px;
     z-index: 2;
     flex-grow: 1;
   }
 
+  /* Гифка по центру */
+  .center-gif {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 280px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 0 40px rgba(180, 106, 255, 0.3);
+    border: 2px solid rgba(180, 106, 255, 0.5);
+    z-index: 1;
+  }
+
+  /* Цитаты по бокам */
   .text-col {
     width: 28%;
     font-size: 13px;
@@ -80,6 +98,7 @@
     letter-spacing: 0.5px;
     position: relative;
     padding-left: 15px;
+    z-index: 2;
   }
   
   .text-col::before {
@@ -102,6 +121,7 @@
     right: 0;
   }
 
+  /* Нижний текст */
   .bottom-text {
     display: flex;
     justify-content: space-between;
@@ -113,18 +133,20 @@
     text-transform: uppercase;
     position: relative;
     z-index: 3;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
   .text-left { color: #fff; display: flex; align-items: center; gap: 20px;}
   .text-left .plus { color: #b46aff; font-size: 1.2em; }
   .text-right { color: #fff; text-align: right; }
 
+  /* Кнопка */
   .action-btn-wrapper {
     display: flex;
     justify-content: center;
     width: 100%;
     z-index: 3;
+    margin-bottom: 20px;
   }
 
   .action-btn {
@@ -146,10 +168,22 @@
     box-shadow: 0 0 40px rgba(180, 106, 255, 0.8);
   }
 
+  /* Подпись автора */
+  .made-by {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 3;
+  }
+
+  /* Оверлей результата */
   .result-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.92);
     backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
@@ -158,7 +192,7 @@
     z-index: 20;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s;
+    transition: opacity 0.4s;
     padding: 40px;
   }
   .result-overlay.active {
@@ -167,8 +201,8 @@
   }
   
   .result-image {
-    max-width: 320px;
-    max-height: 320px;
+    max-width: 340px;
+    max-height: 340px;
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.8);
@@ -199,9 +233,10 @@
   @media (max-width: 768px) {
     .main-frame { padding: 30px 20px; min-height: auto; }
     .hero-title { position: relative; top: 0; font-size: 60px; white-space: normal; margin-bottom: 20px; }
-    .content-area { margin-top: 20px; flex-direction: column; gap: 30px; }
+    .content-area { margin-top: 20px; flex-direction: column; gap: 20px; }
     .text-col { width: 100%; text-align: center; padding: 0; }
     .text-col::before { display: none; }
+    .center-gif { position: relative; top: 0; left: 0; transform: none; margin: 20px auto; display: block; width: 200px; height: 200px; }
     .bottom-text { font-size: 50px; }
   }
 </style>
@@ -213,11 +248,16 @@
   <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
 
   <div class="content-area">
+    
     <div class="text-col">
       «Вы вообще понимаете,<br>
       кто перед вами<br>
       находится?»
     </div>
+
+    <!-- Гифка по центру -->
+    <img src="https://media1.tenor.com/m/9MwgBZ30qnsAAAAd/crona-soul-eater.gif" class="center-gif" alt="Crona">
+
     <div class="text-col right">
       «Это был тактический мув,<br>
       вы ничего<br>
@@ -238,12 +278,8 @@
     <button id="rollBtn" class="action-btn">Крутить судьбу</button>
   </div>
 
-  <!-- НЕВИДИМЫЙ АУДИОПЛЕЕР -->
-  <audio id="bgMusic" loop>
-    <!-- Файл music.mp3 должен лежать в этой же папке -->
-    <source src="music.mp3" type="audio/mpeg">
-    Ваш браузер не поддерживает аудио.
-  </audio>
+  <!-- Подпись -->
+  <div class="made-by">made by qwe1re</div>
 
   <div id="resultOverlay" class="result-overlay">
     <img id="resImg" class="result-image" src="" alt="Результат">
@@ -259,12 +295,12 @@
   var rollBtn = document.getElementById('rollBtn');
   var overlay = document.getElementById('resultOverlay');
   var closeBtn = document.getElementById('closeBtn');
-  var bgMusic = document.getElementById('bgMusic');
   
   var resImg = document.getElementById('resImg');
   var resTitle = document.getElementById('resTitle');
   var resSub = document.getElementById('resSub');
 
+  // Ссылки на картинки для ДА и НЕТ
   var YES_IMAGE_URL = "https://i.ibb.co/6P5KqK0/purple-girl.jpg"; 
   var NO_IMAGE_URL  = "https://i.ibb.co/0yJzVq3/anime-face.jpg";  
   
@@ -290,27 +326,11 @@
   ];
 
   rollBtn.addEventListener('click', function() {
-    // Запускаем музыку при первом клике
-    if (bgMusic.paused) {
-      bgMusic.volume = 0.4; // Громкость (40%)
-      
-      // Ждем загрузки метаданных (длительности), чтобы перемотка сработала
-      if (bgMusic.readyState >= 1) {
-        setRandomStartTime();
-      } else {
-        bgMusic.addEventListener('loadedmetadata', setRandomStartTime, { once: true });
-      }
-
-      bgMusic.play().catch(function(error) {
-        console.log("Автовоспроизведение заблокировано или файл не найден.");
-      });
-    }
-
     rollBtn.disabled = true;
     rollBtn.textContent = "Решаем...";
 
     var ticks = 0;
-    var maxTicks = 15;
+    var maxTicks = 25; // Увеличили количество тиков, чтобы анимация длилась дольше
     
     var spin = setInterval(function() {
       ticks++;
@@ -320,26 +340,12 @@
         rollBtn.disabled = false;
         rollBtn.textContent = "Крутить судьбу";
       }
-    }, 80);
+    }, 80); // Интервал между тиками (80 мс)
   });
 
-  // Функция для установки случайного времени старта
-  function setRandomStartTime() {
-    var duration = bgMusic.duration;
-    
-    // Диапазон 13 минут (13 * 60 = 780 секунд)
-    // Если трек короче 13 минут, берем чуть меньше его полной длины (оставляем 5 сек запаса)
-    var maxTime = Math.min(780, duration - 5); 
-    
-    if (maxTime > 0) {
-      // Выбираем случайное время от 0 до maxTime
-      var randomTime = Math.random() * maxTime;
-      bgMusic.currentTime = randomTime;
-    }
-  }
-
   function showFinalResult() {
-    var isYes = Math.random() < 0.3;
+    // Шансы 50 на 50
+    var isYes = Math.random() < 0.5;
     var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
     var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
