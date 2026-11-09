@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ТРЕНДЫ | КС на FACEIT</title>
+<title>ТРЕНДЫ | КС + FACEIT</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600&display=swap');
 
@@ -11,7 +11,6 @@
 
   body {
     background-color: #000;
-    /* Имитация фона с картинки (тёмно-серый с полосами) */
     background-image: repeating-linear-gradient(90deg, #111 0px, #111 2px, #0a0a0a 2px, #0a0a0a 4px);
     color: #fff;
     font-family: 'Inter', sans-serif;
@@ -23,12 +22,10 @@
     overflow-x: hidden;
   }
 
-  /* Основная рамка */
   .main-frame {
     width: 100%;
     max-width: 1200px;
     background-color: #050505;
-    /* Сетка на фоне (как на картинке) */
     background-image: 
       linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -93,7 +90,7 @@
     font-family: 'Oswald', sans-serif;
     font-size: clamp(80px, 15vw, 180px);
     line-height: 0.8;
-    color: #8cf63a; /* Кислотно-зеленый */
+    color: #8cf63a;
     text-transform: uppercase;
     letter-spacing: -2px;
     position: absolute;
@@ -106,29 +103,51 @@
     text-shadow: 0 10px 30px rgba(0,0,0,0.8);
   }
 
-  /* Центральный блок с планетой и текстом */
+  /* Центральный блок */
   .content-area {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-top: 250px; /* Отступ под ТРЕНДЫ */
+    margin-top: 250px;
     margin-bottom: 60px;
     z-index: 2;
   }
 
-  /* Левая и правая колонки с мелким текстом */
+  /* Цитаты по бокам */
   .text-col {
     width: 25%;
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 11px;
+    line-height: 1.6;
     color: #aaa;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 15px;
   }
-  .text-col.right { text-align: right; }
+  
+  /* Зеленая полоска слева для стиля */
+  .text-col::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    bottom: 2px;
+    width: 3px;
+    background-color: #8cf63a;
+  }
 
-  /* Картинка по центру (планета) */
+  .text-col.right { 
+    text-align: right; 
+    padding-left: 0;
+    padding-right: 15px;
+  }
+  .text-col.right::before {
+    left: auto;
+    right: 0;
+  }
+
+  /* Картинка по центру */
   .center-image-container {
     position: absolute;
     left: 50%;
@@ -137,7 +156,6 @@
     width: 400px;
     height: 400px;
     z-index: -1;
-    /* Чтобы картинка была за текстом, но перед ТРЕНДЫ */
   }
   .center-image-container img {
     width: 100%;
@@ -146,7 +164,7 @@
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
   }
 
-  /* Нижний текст (ВЕБ + ДИЗАЙНА / КС + FACEIT) */
+  /* Нижний текст */
   .bottom-text {
     display: flex;
     justify-content: space-between;
@@ -164,7 +182,7 @@
   .text-left .plus { color: #8cf63a; font-size: 1.2em; }
   .text-right { color: #fff; text-align: right; }
 
-  /* Наша кнопка, стилизованная под дизайн */
+  /* Кнопка */
   .action-btn-wrapper {
     position: absolute;
     bottom: 40px;
@@ -234,12 +252,14 @@
     margin-bottom: 10px;
     text-transform: uppercase;
     text-align: center;
+    line-height: 1;
   }
   .result-sub {
-    font-size: 18px;
+    font-size: 16px;
     color: #ccc;
     text-align: center;
     max-width: 600px;
+    font-style: italic;
   }
   .result-sub.no { color: #ff4444; }
 
@@ -252,23 +272,17 @@
   <!-- Верхнее меню -->
   <div class="top-nav">
     <div class="nav-left">
-      <!-- Иконка "Птица/Логотип" -->
       <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 7L10 18L3 11L6 8L10 12L18 4L21 7Z"/></svg>
-      <!-- Иконка "Дом" -->
       <svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <!-- Иконка "Лупа" -->
       <svg class="nav-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-      <!-- Иконка "Ютуб/Видео" -->
       <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM8 15l7-4-7-4z"/></svg>
     </div>
     
     <div class="nav-right">
-      <!-- Поиск -->
       <div class="search-box">
         <svg style="width:16px;height:16px;fill:#888;" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
         <input type="text" placeholder="Поиск">
       </div>
-      <!-- Иконка "Профиль" -->
       <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
     </div>
   </div>
@@ -279,26 +293,25 @@
   <!-- Центральный блок -->
   <div class="content-area">
     
-    <!-- Левый текст -->
+    <!-- Левая цитата SkyWhyWalker -->
     <div class="text-col">
-      Стиль вобрал в себя<br>
-      ломанные линии,<br>
-      минимализм и рваный<br>
-      ним неожиданные акценты.
+      «Я не токсик, я просто<br>
+      эмоционально<br>
+      выражаю свое мнение<br>
+      о команде»
     </div>
 
     <!-- Картинка по центру (Вставь свою ссылку сюда) -->
     <div class="center-image-container">
-      <!-- ВМЕСТО ПЛАНЕТЫ МОЖНО ВСТАВИТЬ ЛЮБУЮ КАРТИНКУ (например, сферу или логотип CS) -->
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Earth_Western_Hemisphere_transparent_background.png/600px-Earth_Western_Hemisphere_transparent_background.png" alt="Планета">
     </div>
 
-    <!-- Правый текст -->
+    <!-- Правая цитата SkyWhyWalker -->
     <div class="text-col right">
-      Возникнув как реакция на перенасыщение<br>
-      хаотические композиции последних лет, он<br>
-      обращает внимание на легкость и сдержанную<br>
-      выразительность.
+      «Главное в игре — это не<br>
+      победа, а удовольствие.<br>
+      Ну и чтобы тиммейты<br>
+      не были раками»
     </div>
   </div>
 
@@ -312,16 +325,14 @@
     </div>
   </div>
 
-  <!-- Кнопка (спрятана за оверлеем, но выезжает поверх) -->
+  <!-- Кнопка -->
   <div class="action-btn-wrapper">
     <button id="rollBtn" class="action-btn">Удачный день?</button>
   </div>
 
   <!-- Оверлей с результатом -->
   <div id="resultOverlay" class="result-overlay">
-    <!-- Сюда подставляются картинки (если заданы) -->
     <img id="resImg" class="result-image" src="" alt="">
-    <!-- Сюда подставляются эмодзи (если картинок нет) -->
     <div id="resEmoji" class="result-emoji"></div>
     
     <div id="resTitle" class="result-title"></div>
@@ -345,8 +356,8 @@
 
   // ==========================================
   // ВСТАВЬ ССЫЛКИ НА СВОИ КАРТИНКИ ЗДЕСЬ:
-  var YES_IMAGE_URL = ""; // Например: "https://i.imgur.com/abc123.png"
-  var NO_IMAGE_URL  = ""; // Например: "https://i.imgur.com/xyz789.png"
+  var YES_IMAGE_URL = ""; 
+  var NO_IMAGE_URL  = ""; 
   // ==========================================
 
   rollBtn.addEventListener('click', function() {
@@ -356,7 +367,6 @@
     var ticks = 0;
     var maxTicks = 14;
     
-    // Анимация перебора
     var spin = setInterval(function() {
       ticks++;
       if (ticks >= maxTicks) {
@@ -373,11 +383,9 @@
     var isYes = Math.random() < 0.3;
     var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
 
-    // Очищаем предыдущие
     resImg.style.display = 'none';
     resEmoji.style.display = 'none';
 
-    // Проверяем, задана ли картинка
     if (imgUrl && imgUrl.trim() !== "") {
       resImg.src = imgUrl;
       resImg.style.display = 'block';
@@ -388,13 +396,15 @@
 
     if (isYes) {
       resTitle.textContent = "ДА, УДАЧНЫЙ!";
-      resTitle.style.color = "#8cf63a"; // Зеленый
-      resSub.textContent = "Заходи в FACEIT, сегодня твой день! 🔥";
+      resTitle.style.color = "#8cf63a";
+      // Цитата SkyWhyWalker при удачном дне
+      resSub.textContent = "«Сегодня можно и пострелять, главное — не забудь про позитив!» — SkyWhyWalker";
       resSub.className = "result-sub";
     } else {
       resTitle.textContent = "НЕТ, НЕ СЕГОДНЯ";
-      resTitle.style.color = "#ff4444"; // Красный
-      resSub.textContent = "Лучше отдохни, сегодня не прёт 😅";
+      resTitle.style.color = "#ff4444";
+      // Цитата SkyWhyWalker при неудачном дне
+      resSub.textContent = "«Иногда лучше просто выйти из игры и сохранить свои нервы» — SkyWhyWalker";
       resSub.className = "result-sub no";
     }
 
