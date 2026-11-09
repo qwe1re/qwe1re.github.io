@@ -4,37 +4,182 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Удачный день для CS на FACEIT?</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    padding: 20px;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 560px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #rollBtn {
+    font-size: 1.2rem;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #e94560, #f39c12);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  #rollBtn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(233,69,96,0.6); }
+  #rollBtn:active { transform: translateY(0) scale(0.98); }
+  #rollBtn:disabled { opacity: 0.6; cursor: wait; }
+
+  .result {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 16px;
+    animation: popIn 0.4s ease;
+  }
+
+  .result.hidden { display: none; }
+
+  .result-icon img {
+    max-width: 240px;
+    max-height: 240px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    object-fit: cover;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  .result-icon.emoji { font-size: 5rem; line-height: 1; margin-bottom: 8px; }
+
+  .result h2 { font-size: 1.6rem; margin-bottom: 8px; }
+  .result p { opacity: 0.85; }
+
+  .result.yes { background: rgba(107, 203, 119, 0.15); border: 2px solid #6bcb77; }
+  .result.yes h2 { color: #6bcb77; }
+  .result.no { background: rgba(255, 107, 107, 0.15); border: 2px solid #ff6b6b; }
+  .result.no h2 { color: #ff6b6b; }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>
 </head>
 <body>
 <div class="container">
   <h1>🎮 Удачный сегодня день для CS на FACEIT?</h1>
 
-  <button id="rollBtn">Крутить судьбу 🎲</button>
+  <!-- ===== ВСТАВЬ СВОИ ССЫЛКИ НА КАРТИНКИ ЗДЕСЬ ===== -->
+  <img id="yesImage" src="" alt="" style="display:none"
+       data-src="https://i.imgur.com/ВАША_ССЫЛКА_ДА.png">
+  <img id="noImage" src="" alt="" style="display:none"
+       data-src="https://i.imgur.com/ВАША_ССЫЛКА_НЕТ.png">
+  <!-- ================================================= -->
+
+  <button id="rollBtn" type="button">Крутить судьбу 🎲</button>
 
   <div id="result" class="result hidden">
     <div id="resultIcon" class="result-icon"></div>
     <h2 id="resultText"></h2>
     <p id="resultSub"></p>
   </div>
-
-  <div class="upload-section">
-    <h3>🖼️ Свои картинки</h3>
-    <p class="hint">Загрузи картинку для «Да» и для «Нет»</p>
-
-    <label class="upload-label">
-      ✅ Картинка для «Да»
-      <input type="file" id="yesImg" accept="image/*">
-    </label>
-
-    <label class="upload-label">
-      ❌ Картинка для «Нет»
-      <input type="file" id="noImg" accept="image/*">
-    </label>
-
-    <button id="resetBtn" class="reset">Сбросить картинки</button>
-  </div>
 </div>
-<script src="script.js"></script>
+
+<script>
+(function () {
+  var rollBtn    = document.getElementById('rollBtn');
+  var resultDiv  = document.getElementById('result');
+  var resultIcon = document.getElementById('resultIcon');
+  var resultText = document.getElementById('resultText');
+  var resultSub  = document.getElementById('resultSub');
+
+  // Ссылки на картинки берём из data-src
+  var YES_URL = document.getElementById('yesImage').getAttribute('data-src') || '';
+  var NO_URL  = document.getElementById('noImage').getAttribute('data-src') || '';
+
+  // Проверяем, что ссылка реально задана (не заглушка)
+  function validUrl(url) {
+    return url && url.indexOf('ВАША_ССЫЛКА') === -1 && url.trim() !== '';
+  }
+
+  function showTempResult(isYes) {
+    resultDiv.classList.remove('hidden', 'yes', 'no');
+    resultDiv.classList.add(isYes ? 'yes' : 'no');
+    resultIcon.className = 'result-icon emoji';
+    resultIcon.textContent = isYes ? '✅' : '❌';
+    resultText.textContent = isYes ? 'ДА' : 'НЕТ';
+    resultSub.textContent  = '...';
+  }
+
+  function finalResult() {
+    // 30% — ДА, 70% — НЕТ
+    var isYes = Math.random() < 0.3;
+
+    resultDiv.classList.remove('yes', 'no', 'hidden');
+    resultDiv.classList.add(isYes ? 'yes' : 'no');
+
+    var url = isYes ? YES_URL : NO_URL;
+
+    if (validUrl(url)) {
+      resultIcon.className = 'result-icon';
+      resultIcon.innerHTML = '<img src="' + url + '" alt="">';
+    } else {
+      resultIcon.className = 'result-icon emoji';
+      resultIcon.textContent = isYes ? '🏆' : '💀';
+    }
+
+    if (isYes) {
+      resultText.textContent = 'ДА, УДАЧНЫЙ ДЕНЬ!';
+      resultSub.textContent  = 'Заходи в FACEIT, сегодня твой день! 🔥';
+    } else {
+      resultText.textContent = 'НЕТ, НЕ СЕГОДНЯ';
+      resultSub.textContent  = 'Лучше отдохни, сегодня не прёт 😅';
+    }
+  }
+
+  rollBtn.addEventListener('click', function () {
+    rollBtn.disabled = true;
+    resultDiv.classList.add('hidden');
+
+    var ticks = 0;
+    var maxTicks = 14;
+    var spin = setInterval(function () {
+      showTempResult(Math.random() < 0.3);
+      ticks++;
+      if (ticks >= maxTicks) {
+        clearInterval(spin);
+        finalResult();
+        rollBtn.disabled = false;
+      }
+    }, 90);
+  });
+})();
+</script>
 </body>
 </html>
