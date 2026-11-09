@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Удачный день для CS на FACEIT?</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>🎮 Удачный сегодня день для CS на FACEIT?</h1>
+
+  <button id="rollBtn">Крутить судьбу 🎲</button>
+
+  <div id="result" class="result hidden">
+    <div id="resultIcon" class="result-icon"></div>
+    <h2 id="resultText"></h2>
+    <p id="resultSub"></p>
+  </div>
+
+  <div class="upload-section">
+    <h3>🖼️ Свои картинки</h3>
+    <p class="hint">Загрузи картинку для «Да» и для «Нет»</p>
+
+    <label class="upload-label">
+      ✅ Картинка для «Да»
+      <input type="file" id="yesImg" accept="image/*">
+    </label>
+
+    <label class="upload-label">
+      ❌ Картинка для «Нет»
+      <input type="file" id="noImg" accept="image/*">
+    </label>
+
+    <button id="resetBtn" class="reset">Сбросить картинки</button>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
