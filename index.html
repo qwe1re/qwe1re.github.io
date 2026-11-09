@@ -1,304 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Гоночки 🏎️</title>
-<style>
-  body {
-    margin: 0;
-    background: #111;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: #eee;
-    user-select: none;
-  }
-  canvas {
-    border: 2px solid #444;
-    border-radius: 8px;
-    background: #222;
-    max-width: 95vw;
-    touch-action: none;
-  }
-  .hud {
-    margin-top: 10px;
-    font-size: 18px;
-    display: flex;
-    gap: 24px;
-  }
-  .controls {
-    margin-top: 6px;
-    font-size: 13px;
-    color: #888;
-  }
-  #overlay {
-    position: absolute;
-    text-align: center;
-    background: rgba(0,0,0,0.75);
-    padding: 20px 30px;
-    border-radius: 12px;
-    display: none;
-  }
-  #overlay h2 { margin: 0 0 10px; }
-  button {
-    padding: 8px 18px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    background: #4caf50;
-    color: #fff;
-    cursor: pointer;
-  }
-  button:hover { background: #66bb6a; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Лучшие скидки в Steam</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #1b2838; color: #c7d5e0; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #66c0f4; }
+        .controls { text-align: center; margin-bottom: 20px; }
+        select, button { padding: 8px 12px; border-radius: 4px; border: none; background: #2a475e; color: white; cursor: pointer; }
+        button:hover { background: #66c0f4; color: #1b2838; }
+        #games-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .game-card { background: #2a475e; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
+        .game-card:hover { transform: translateY(-3px); }
+        .game-card img { width: 100%; height: 130px; object-fit: cover; }
+        .game-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .game-title { font-weight: bold; font-size: 14px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .discount-badge { background: #4c6b22; color: #beee11; padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 5px; }
+        .price-row { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        .old-price { text-decoration: line-through; color: #738895; font-size: 12px; }
+        .new-price { color: #beee11; font-weight: bold; }
+    </style>
 </head>
 <body>
+    <h1>🔥 Игры с наибольшей скидкой</h1>
+    <div class="controls">
+        <label>Регион: </label>
+        <select id="region-select">
+            <option value="ru">Россия (RUB)</option>
+            <option value="us">США (USD)</option>
+            <option value="de">Германия (EUR)</option>
+        </select>
+        <button onclick="loadDeals()">Обновить</button>
+    </div>
+    <div id="games-container">Загрузка...</div>
 
-<canvas id="game" width="400" height="600"></canvas>
-
-<div class="hud">
-  <span>Счёт: <b id="score">0</b></span>
-  <span>Рекорд: <b id="best">0</b></span>
-</div>
-<div class="controls">← → или A/D — перестроиться • Пробел — пауза</div>
-
-<div id="overlay">
-  <h2>💥 Авария!</h2>
-  <p>Счёт: <b id="finalScore">0</b></p>
-  <button onclick="restart()">Заново</button>
-</div>
-
-<script>
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
-
-const W = canvas.width;
-const H = canvas.height;
-
-// Дорога
-const ROAD_LEFT = 60;
-const ROAD_RIGHT = W - 60;
-const LANES = 4;
-const LANE_W = (ROAD_RIGHT - ROAD_LEFT) / LANES;
-
-// Игрок
-const player = {
-  w: 34,
-  h: 60,
-  lane: 1,
-  x: 0,
-  y: H - 100,
-  speed: 0
-};
-
-// Состояние игры
-let obstacles = [];
-let roadOffset = 0;
-let score = 0;
-let best = parseInt(localStorage.getItem('raceBest') || '0');
-let gameOver = false;
-let paused = false;
-let lastTime = 0;
-let spawnTimer = 0;
-let speed = 4;
-
-document.getElementById('best').textContent = best;
-
-// Управление
-const keys = {};
-document.addEventListener('keydown', e => {
-  keys[e.key.toLowerCase()] = true;
-  if (e.key === ' ') { e.preventDefault(); if (!gameOver) paused = !paused; }
-  if (e.key === 'ArrowLeft' || e.key === 'a') move(-1);
-  if (e.key === 'ArrowRight' || e.key === 'd') move(1);
-});
-document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-
-// Свайпы для мобильных
-let touchX = null;
-canvas.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
-canvas.addEventListener('touchend', e => {
-  if (touchX === null) return;
-  const dx = e.changedTouches[0].clientX - touchX;
-  if (Math.abs(dx) > 30) move(dx > 0 ? 1 : -1);
-  touchX = null;
-});
-
-function move(dir) {
-  if (gameOver || paused) return;
-  player.lane = Math.max(0, Math.min(LANES - 1, player.lane + dir));
-}
-
-function laneCenter(lane) {
-  return ROAD_LEFT + LANE_W * lane + LANE_W / 2;
-}
-
-// Спавн препятствий
-function spawnObstacle() {
-  const lane = Math.floor(Math.random() * LANES);
-  const w = 34 + Math.random() * 10;
-  const h = 55 + Math.random() * 25;
-  obstacles.push({
-    x: laneCenter(lane) - w / 2,
-    y: -h,
-    w, h,
-    lane
-  });
-}
-
-// Обновление
-function update(dt) {
-  if (gameOver || paused) return;
-
-  // Плавное перемещение игрока в нужную полосу
-  const targetX = laneCenter(player.lane) - player.w / 2;
-  player.x += (targetX - player.x) * Math.min(1, dt * 0.015);
-
-  // Скорость растёт со временем
-  speed = 4 + score * 0.02;
-  roadOffset = (roadOffset + speed * dt * 0.06) % 40;
-
-  // Спавн
-  spawnTimer -= dt;
-  if (spawnTimer <= 0) {
-    spawnObstacle();
-    spawnTimer = Math.max(350, 900 - score * 3);
-  }
-
-  // Движение препятствий
-  for (let i = obstacles.length - 1; i >= 0; i--) {
-    const o = obstacles[i];
-    o.y += speed * dt * 0.06;
-    if (o.y > H) {
-      obstacles.splice(i, 1);
-      score++;
-      document.getElementById('score').textContent = score;
-    }
-  }
-
-  // Коллизии (AABB с небольшим отступом)
-  for (const o of obstacles) {
-    if (
-      player.x + player.w - 6 > o.x &&
-      player.x + 6 < o.x + o.w &&
-      player.y + player.h - 6 > o.y &&
-      player.y + 6 < o.y + o.h
-    ) {
-      endGame();
-      return;
-    }
-  }
-}
-
-function endGame() {
-  gameOver = true;
-  if (score > best) {
-    best = score;
-    localStorage.setItem('raceBest', best);
-    document.getElementById('best').textContent = best;
-  }
-  document.getElementById('finalScore').textContent = score;
-  document.getElementById('overlay').style.display = 'block';
-}
-
-// Отрисовка
-function draw() {
-  ctx.clearRect(0, 0, W, H);
-
-  // Трава/фон
-  ctx.fillStyle = '#2b2b2b';
-  ctx.fillRect(0, 0, W, H);
-
-  // Дорога
-  ctx.fillStyle = '#3a3a3a';
-  ctx.fillRect(ROAD_LEFT, 0, ROAD_RIGHT - ROAD_LEFT, H);
-
-  // Края
-  ctx.fillStyle = '#e0e0e0';
-  ctx.fillRect(ROAD_LEFT - 4, 0, 4, H);
-  ctx.fillRect(ROAD_RIGHT, 0, 4, H);
-
-  // Разметка между полосами
-  ctx.fillStyle = '#f0c040';
-  for (let i = 1; i < LANES; i++) {
-    const x = ROAD_LEFT + LANE_W * i - 2;
-    for (let y = -40 + roadOffset; y < H; y += 40) {
-      ctx.fillRect(x, y, 4, 20);
-    }
-  }
-
-  // Препятствия (машины)
-  for (const o of obstacles) {
-    ctx.fillStyle = '#e74c3c';
-    roundRect(o.x, o.y, o.w, o.h, 6);
-    ctx.fillStyle = '#c0392b';
-    ctx.fillRect(o.x + 6, o.y + 8, o.w - 12, 14);
-    ctx.fillStyle = '#7f1d1d';
-    ctx.fillRect(o.x + 6, o.y + o.h - 22, o.w - 12, 14);
-  }
-
-  // Игрок
-  ctx.fillStyle = '#3498db';
-  roundRect(player.x, player.y, player.w, player.h, 6);
-  ctx.fillStyle = '#1f6fa8';
-  ctx.fillRect(player.x + 6, player.y + 10, player.w - 12, 16);
-  ctx.fillStyle = '#7fc8f8';
-  ctx.fillRect(player.x + 6, player.y + player.h - 24, player.w - 12, 14);
-
-  // Пауза
-  if (paused && !gameOver) {
-    ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 28px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('ПАУЗА', W / 2, H / 2);
-  }
-}
-
-function roundRect(x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-  ctx.fill();
-}
-
-// Главный цикл
-function loop(t) {
-  const dt = Math.min(50, t - lastTime || 16);
-  lastTime = t;
-  update(dt);
-  draw();
-  requestAnimationFrame(loop);
-}
-
-function restart() {
-  obstacles = [];
-  score = 0;
-  speed = 4;
-  spawnTimer = 0;
-  roadOffset = 0;
-  player.lane = 1;
-  player.x = laneCenter(1) - player.w / 2;
-  gameOver = false;
-  paused = false;
-  document.getElementById('score').textContent = 0;
-  document.getElementById('overlay').style.display = 'none';
-  lastTime = 0;
-}
-
-// Старт
-player.x = laneCenter(1) - player.w / 2;
-requestAnimationFrame(loop);
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
