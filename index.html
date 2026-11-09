@@ -22,9 +22,10 @@
     overflow-x: hidden;
   }
 
+  /* Увеличили рамку и отступы */
   .main-frame {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1300px; /* Было 1200 */
     background-color: #050505;
     background-image: 
       linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -33,21 +34,21 @@
     border-radius: 30px;
     border: 2px solid #888;
     box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.9);
-    padding: 40px;
+    padding: 60px; /* Было 40 */
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 600px; /* Чтобы контент не прилипал, когда убрали планету */
+    min-height: 700px; /* Сделали выше */
   }
 
-  /* Главный заголовок РЕГАТЬ ИЛИ НЕТ? */
+  /* Главный заголовок */
   .hero-title {
     font-family: 'Oswald', sans-serif;
     font-size: clamp(60px, 11vw, 150px);
     line-height: 0.8;
-    color: #8cf63a;
+    color: #b46aff; /* Заменили зеленый на фиолетовый */
     text-transform: uppercase;
     letter-spacing: -2px;
     position: absolute;
@@ -66,8 +67,8 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Выровняли по центру, так как планету убрали */
-    margin-top: 180px; /* Отступ под огромный заголовок */
+    align-items: center;
+    margin-top: 200px;
     margin-bottom: 60px;
     z-index: 2;
     flex-grow: 1;
@@ -75,8 +76,8 @@
 
   /* Цитаты по бокам */
   .text-col {
-    width: 30%;
-    font-size: 12px;
+    width: 28%;
+    font-size: 13px;
     line-height: 1.6;
     color: #aaa;
     text-transform: uppercase;
@@ -85,7 +86,7 @@
     padding-left: 15px;
   }
   
-  /* Зеленая полоска слева для стиля */
+  /* Фиолетовая полоска слева */
   .text-col::before {
     content: '';
     position: absolute;
@@ -93,7 +94,7 @@
     top: 2px;
     bottom: 2px;
     width: 3px;
-    background-color: #8cf63a;
+    background-color: #b46aff;
   }
 
   .text-col.right { 
@@ -122,10 +123,10 @@
   }
 
   .text-left { color: #fff; display: flex; align-items: center; gap: 20px;}
-  .text-left .plus { color: #8cf63a; font-size: 1.2em; }
+  .text-left .plus { color: #b46aff; font-size: 1.2em; }
   .text-right { color: #fff; text-align: right; }
 
-  /* Кнопка (по центру внизу) */
+  /* Кнопка */
   .action-btn-wrapper {
     display: flex;
     justify-content: center;
@@ -133,7 +134,7 @@
   }
 
   .action-btn {
-    background: #8cf63a;
+    background: #b46aff;
     color: #000;
     font-family: 'Oswald', sans-serif;
     font-size: 24px;
@@ -143,12 +144,12 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(140, 246, 58, 0.4);
+    box-shadow: 0 0 20px rgba(180, 106, 255, 0.4);
     transition: all 0.3s;
   }
   .action-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(140, 246, 58, 0.8);
+    box-shadow: 0 0 40px rgba(180, 106, 255, 0.8);
   }
 
   /* Блок результата */
@@ -165,42 +166,41 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s;
+    padding: 40px;
   }
   .result-overlay.active {
     opacity: 1;
     pointer-events: auto;
   }
   
+  /* Стили для картинок */
   .result-image {
-    max-width: 350px;
-    max-height: 350px;
-    border-radius: 10px;
+    max-width: 320px;
+    max-height: 320px;
+    border-radius: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    border: 2px solid rgba(255,255,255,0.1);
     display: none;
-  }
-  
-  .result-emoji {
-    font-size: 120px;
-    margin-bottom: 20px;
-    display: none;
+    object-fit: cover;
   }
 
   .result-title {
     font-family: 'Oswald', sans-serif;
-    font-size: 70px;
-    color: #8cf63a;
+    font-size: 80px;
+    color: #b46aff;
     margin-bottom: 15px;
     text-transform: uppercase;
     text-align: center;
     line-height: 1;
   }
   .result-sub {
-    font-size: 18px;
+    font-size: 20px;
     color: #ccc;
     text-align: center;
-    max-width: 700px;
+    max-width: 800px;
     font-style: italic;
+    line-height: 1.4;
   }
   .result-sub.no { color: #ff4444; }
 
@@ -216,20 +216,18 @@
   <!-- Центральный блок с цитатами -->
   <div class="content-area">
     
-    <!-- Левая цитата SkyWhyWalker -->
+    <!-- Левая цитата -->
     <div class="text-col">
-      «Я не токсик, я просто<br>
-      эмоционально<br>
-      выражаю свое мнение<br>
-      о команде»
+      «Вы вообще понимаете,<br>
+      кто перед вами<br>
+      находится?»
     </div>
 
-    <!-- Правая цитата SkyWhyWalker -->
+    <!-- Правая цитата -->
     <div class="text-col right">
-      «Главное в игре — это не<br>
-      победа, а удовольствие.<br>
-      Ну и чтобы тиммейты<br>
-      не были раками»
+      «Это был тактический мув,<br>
+      вы ничего<br>
+      не понимаете»
     </div>
   </div>
 
@@ -250,13 +248,12 @@
 
   <!-- Оверлей с результатом -->
   <div id="resultOverlay" class="result-overlay">
-    <img id="resImg" class="result-image" src="" alt="">
-    <div id="resEmoji" class="result-emoji"></div>
+    <img id="resImg" class="result-image" src="" alt="Результат">
     
     <div id="resTitle" class="result-title"></div>
     <div id="resSub" class="result-sub"></div>
     
-    <button id="closeBtn" class="action-btn" style="margin-top: 40px; background: transparent; border: 2px solid #8cf63a; color: #8cf63a; box-shadow: none; padding: 12px 40px; font-size: 18px;">Закрыть</button>
+    <button id="closeBtn" class="action-btn" style="margin-top: 40px; background: transparent; border: 2px solid #b46aff; color: #b46aff; box-shadow: none; padding: 12px 40px; font-size: 18px;">Закрыть</button>
   </div>
 
 </div>
@@ -268,15 +265,53 @@
   var closeBtn = document.getElementById('closeBtn');
   
   var resImg = document.getElementById('resImg');
-  var resEmoji = document.getElementById('resEmoji');
   var resTitle = document.getElementById('resTitle');
   var resSub = document.getElementById('resSub');
 
   // ==========================================
-  // ВСТАВЬ ССЫЛКИ НА СВОИ КАРТИНКИ ЗДЕСЬ:
-  var YES_IMAGE_URL = ""; 
-  var NO_IMAGE_URL  = ""; 
+  // ССЫЛКИ НА КАРТИНКИ (если загрузишь их на GitHub, 
+  // просто замени эти ссылки на свои)
   // ==========================================
+  var YES_IMAGE_URL = "https://i.ibb.co/6P5KqK0/purple-girl.jpg"; // Фото для ДА
+  var NO_IMAGE_URL  = "https://i.ibb.co/0yJzVq3/anime-face.jpg";  // Фото для НЕТ
+  
+  // Твой список цитат
+  var quotes = [
+    "«Абсолютный!»",
+    "«Запоминайте цитату…»",
+    "«Муваюсь так жёстко!»",
+    "«Вы зашли на стрим к абсолютному»",
+    "«Ты что, глупый?!»",
+    "«Куда ты смотришь, боже?!»",
+    "«Да как он это делает?!»",
+    "«Если тебе тяжело идти — значит, ты тащишь мешок картошки»",
+    "«Неважно, кто перед тобой. Важно, сколько у тебя патронов»",
+    "«Лучше быть абсолютным в чате, чем относительным по жизни»",
+    "«Жду всех абсолютных в группе»",
+    "«Да он с софтом играет!»",
+    "«Вы вообще понимаете, кто перед вами находится?»",
+    "«Я двигаюсь на уверенном»",
+    "«Цитата Ская, запоминайте!»",
+    "«Сука знает, что я в деле!»",
+    "«Я включаю режим абсолютного»",
+    "«Это был тактический мув, вы ничего не понимаете»",
+    "«Чат, вы видите этот абсурд?»",
+    "«Да как это не залетело, я же ровно в голову целился!»",
+    "«Всё, я в тильте, не трогайте меня»",
+    "«Мой микрофон не выдерживает этой гениальности»",
+    "«Это не я слил, это пинг»",
+    "«Вы думали я проиграл? Это был байт!»",
+    "«Я читаю эту игру как открытую книгу»",
+    "«Где мой хедшот, игра сломалась»",
+    "«Это уровень абсолютного, вам не понять»",
+    "«Я просто на голову выше всех в этом лобби»",
+    "«Это чистый лак, ему просто повезло»",
+    "«Я не проигрываю, я просто даю им шанс»",
+    "«Мой прайм-тайм начался»",
+    "«Это абсолютная доминация»",
+    "«Вы недооцениваете мою силу»",
+    "«Абсолютные всегда побеждают»"
+  ];
 
   rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
@@ -300,27 +335,22 @@
     // 30% - Да, 70% - Нет
     var isYes = Math.random() < 0.3;
     var imgUrl = isYes ? YES_IMAGE_URL : NO_IMAGE_URL;
+    
+    // Выбираем случайную цитату из списка
+    var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-    resImg.style.display = 'none';
-    resEmoji.style.display = 'none';
-
-    if (imgUrl && imgUrl.trim() !== "") {
-      resImg.src = imgUrl;
-      resImg.style.display = 'block';
-    } else {
-      resEmoji.textContent = isYes ? "🏆" : "💀";
-      resEmoji.style.display = 'block';
-    }
+    resImg.style.display = 'block';
+    resImg.src = imgUrl;
 
     if (isYes) {
       resTitle.textContent = "РЕГАТЬ!";
-      resTitle.style.color = "#8cf63a";
-      resSub.textContent = "«Сегодня можно и пострелять, главное — не забудь про позитив!» — SkyWhyWalker";
+      resTitle.style.color = "#b46aff";
+      resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub";
     } else {
       resTitle.textContent = "НЕ РЕГАТЬ";
       resTitle.style.color = "#ff4444";
-      resSub.textContent = "«Иногда лучше просто выйти из игры и сохранить свои нервы» — SkyWhyWalker";
+      resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub no";
     }
 
