@@ -11,7 +11,9 @@
 
   body {
     background-color: #000;
-    background-image: repeating-linear-gradient(90deg, #111 0px, #111 2px, #0a0a0a 2px, #0a0a0a 4px);
+    /* Добавляем глубокий космический фон */
+    background-image: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #000000 70%),
+                      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px);
     color: #fff;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -20,19 +22,22 @@
     justify-content: center;
     padding: 20px;
     overflow-x: hidden;
+    perspective: 1000px; /* Создаем 3D-пространство для всего сайта */
   }
 
+  /* 3D-Стеклянная рамка (как на iOS) */
   .main-frame {
     width: 100%;
     max-width: 1300px;
-    background-color: #050505;
-    background-image: 
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    border-radius: 30px;
-    border: 2px solid #888;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.9);
+    background: rgba(15, 10, 25, 0.4); /* Полупрозрачный тёмный фон */
+    backdrop-filter: blur(25px); /* Эффект размытого стекла */
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.6), 
+      inset 0 1px 0 rgba(255, 255, 255, 0.2), /* Блик сверху */
+      inset 0 -1px 0 rgba(0, 0, 0, 0.5);      /* Тень снизу */
     padding: 50px;
     position: relative;
     overflow: hidden;
@@ -42,8 +47,10 @@
     align-items: center;
     min-height: 750px;
     gap: 40px;
+    transform-style: preserve-3d; /* Сохраняем 3D-эффекты детей */
   }
 
+  /* Заголовок с 3D-тенью */
   .hero-title {
     font-family: 'Oswald', sans-serif;
     font-size: clamp(60px, 11vw, 150px);
@@ -53,72 +60,110 @@
     letter-spacing: -2px;
     white-space: nowrap;
     z-index: 2;
-    text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    text-shadow: 
+      0 10px 20px rgba(0,0,0,0.8),
+      0 20px 40px rgba(180, 106, 255, 0.3); /* 3D свечение */
     text-align: center;
+    transform: translateZ(50px); /* Выдвигаем вперед */
+    animation: floatTitle 4s ease-in-out infinite; /* Легкое парение */
   }
 
+  /* Гифка с 3D-эффектом */
   .center-gif {
     max-width: 450px;
     max-height: 450px;
     width: auto;
     height: auto;
-    border-radius: 25px;
-    box-shadow: 0 0 50px rgba(180, 106, 255, 0.5);
-    border: 3px solid rgba(180, 106, 255, 0.7);
+    border-radius: 30px;
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.8),
+      0 0 40px rgba(180, 106, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     z-index: 1;
     object-fit: contain;
+    transform: translateZ(30px) rotateX(5deg);
+    animation: floatGif 5s ease-in-out infinite;
   }
 
+  /* 3D Кнопка */
   .action-btn {
-    background: #b46aff;
-    color: #000;
+    background: linear-gradient(135deg, #c37bff 0%, #9145ff 100%);
+    color: #fff;
     font-family: 'Oswald', sans-serif;
     font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 18px 60px;
-    border: none;
-    border-radius: 5px;
+    padding: 20px 70px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px; /* Округлая как на iOS */
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(180, 106, 255, 0.4);
-    transition: all 0.3s;
+    box-shadow: 
+      0 15px 30px rgba(0,0,0,0.5),
+      0 5px 15px rgba(180, 106, 255, 0.4),
+      inset 0 2px 5px rgba(255,255,255,0.4);
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: 3;
+    transform: translateZ(60px);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
   }
+  
   .action-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(180, 106, 255, 0.8);
+    transform: translateZ(80px) scale(1.05);
+    box-shadow: 
+      0 25px 40px rgba(0,0,0,0.6),
+      0 10px 20px rgba(180, 106, 255, 0.6),
+      inset 0 2px 5px rgba(255,255,255,0.5);
+  }
+  
+  /* Эффект нажатия */
+  .action-btn:active {
+    transform: translateZ(30px) scale(0.95);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
   }
 
-  /* Ссылка на Steam */
+  /* Ссылка на Steam с 3D-эффектом */
   .steam-link {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 25px;
+    left: 25px;
     z-index: 10;
-    opacity: 0.3;
-    transition: opacity 0.3s;
+    opacity: 0.5;
+    transition: all 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
+    transform: translateZ(20px);
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
   }
-  .steam-link:hover { opacity: 1; }
-  .steam-link svg { width: 24px; height: 24px; fill: #fff; }
+  .steam-link:hover {
+    opacity: 1;
+    transform: translateZ(40px) scale(1.1) rotate(-5deg);
+  }
+  .steam-link img {
+    width: 36px; 
+    height: 36px;
+    object-fit: contain;
+    filter: invert(1); 
+  }
 
-  /* Плеер */
+  /* Стеклянный Плеер */
   .audio-player {
     position: absolute;
-    bottom: 20px;
+    bottom: 25px;
     right: 30px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: rgba(10, 10, 10, 0.85);
-    border: 1px solid rgba(180, 106, 255, 0.3);
-    padding: 12px 15px;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 20px;
     z-index: 10;
-    width: 280px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    width: 290px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateZ(20px);
   }
 
   .player-controls {
@@ -128,10 +173,10 @@
   }
 
   .play-btn {
-    background: #b46aff;
-    border: none;
-    width: 34px;
-    height: 34px;
+    background: linear-gradient(135deg, #c37bff 0%, #9145ff 100%);
+    border: 1px solid rgba(255,255,255,0.4);
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -139,9 +184,11 @@
     cursor: pointer;
     transition: transform 0.2s;
     flex-shrink: 0;
+    box-shadow: 0 5px 15px rgba(145, 69, 255, 0.4);
   }
   .play-btn:hover { transform: scale(1.1); }
-  .play-btn svg { width: 14px; height: 14px; fill: #000; }
+  .play-btn:active { transform: scale(0.9); }
+  .play-btn svg { width: 14px; height: 14px; fill: #fff; }
 
   .seek-bar {
     flex-grow: 1;
@@ -153,8 +200,8 @@
   .time-info {
     display: flex;
     justify-content: space-between;
-    font-size: 10px;
-    color: #aaa;
+    font-size: 11px;
+    color: #ccc;
     font-family: 'Inter', sans-serif;
   }
 
@@ -164,7 +211,7 @@
     gap: 8px;
     margin-top: 4px;
   }
-  .volume-control svg { width: 16px; height: 16px; fill: #b46aff; flex-shrink: 0; }
+  .volume-control svg { width: 16px; height: 16px; fill: #c37bff; flex-shrink: 0; }
 
   input[type=range] {
     -webkit-appearance: none;
@@ -177,31 +224,32 @@
   input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 4px;
-    background: #444;
+    background: rgba(255,255,255,0.2);
     border-radius: 2px;
   }
   
   input[type=range]::-webkit-slider-thumb {
-    height: 12px;
-    width: 12px;
+    height: 14px;
+    width: 14px;
     border-radius: 50%;
-    background: #b46aff;
+    background: #fff;
     -webkit-appearance: none;
-    margin-top: -4px;
-    box-shadow: 0 0 8px rgba(180, 106, 255, 0.8);
+    margin-top: -5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
   }
 
-  /* ================= АНИМАЦИЯ РУЛЕТКИ ================= */
+  /* ================= 3D РУЛЕТКА ================= */
   .roulette-container {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
     display: none; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 15;
-    backdrop-filter: blur(10px);
+    perspective: 1500px; /* Усиленная перспектива для рулетки */
   }
 
   .roulette-container.active {
@@ -209,15 +257,37 @@
   }
 
   .roulette-window {
-    width: 700px; /* Сделали окно чуть шире, чтобы картинки лучше смотрелись */
+    width: 700px;
     max-width: 95%;
-    height: 200px; /* Увеличили высоту под картинки */
-    background: #111;
-    border: 3px solid #b46aff;
-    border-radius: 15px;
+    height: 220px;
+    background: linear-gradient(to bottom, #111, #050505);
+    border: 2px solid rgba(180, 106, 255, 0.5);
+    border-radius: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 40px rgba(180, 106, 255, 0.3);
+    box-shadow: 
+      0 30px 60px rgba(0,0,0,0.8), 
+      inset 0 0 50px rgba(180, 106, 255, 0.2);
+    transform: rotateX(10deg); /* Наклоняем рулетку */
+  }
+
+  /* Градиенты по краям (эффект затухания) */
+  .roulette-window::before,
+  .roulette-window::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 100px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .roulette-window::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  }
+  .roulette-window::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
   }
 
   .roulette-pointer {
@@ -228,8 +298,8 @@
     width: 4px;
     background: #fff;
     transform: translateX(-50%);
-    z-index: 2;
-    box-shadow: 0 0 15px #fff, 0 0 30px #b46aff;
+    z-index: 10;
+    box-shadow: 0 0 20px #fff, 0 0 40px #b46aff;
   }
 
   .roulette-track {
@@ -241,47 +311,48 @@
     will-change: transform;
   }
 
-  /* Элемент рулетки (картинка + текст) */
+  /* Элементы с 3D-эффектом */
   .roulette-item {
-    width: 220px; /* Ширина одного элемента */
+    width: 220px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-right: 2px solid #222;
-    border-left: 2px solid #222;
+    border-right: 1px solid rgba(255,255,255,0.05);
     height: 100%;
-    box-sizing: border-box;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.02);
+    background: radial-gradient(circle at 50% 50%, rgba(180, 106, 255, 0.05) 0%, transparent 70%);
   }
 
   .roulette-item img {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
+    width: 110px;
+    height: 110px;
+    border-radius: 15px;
     object-fit: cover;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.8), 0 0 15px rgba(180, 106, 255, 0.3);
+    transform: translateZ(20px);
   }
 
   .roulette-item .item-text {
     font-family: 'Oswald', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    transform: translateZ(10px);
   }
 
-  .roulette-item.yes .item-text { color: #b46aff; }
+  .roulette-item.yes .item-text { color: #c37bff; }
   .roulette-item.no .item-text { color: #ff4444; }
-  /* ==================================================== */
 
-  /* Оверлей результата */
+  /* ================= РЕЗУЛЬТАТ ================= */
   .result-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -289,7 +360,7 @@
     z-index: 20;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s;
+    transition: opacity 0.5s;
     padding: 40px;
   }
   .result-overlay.active {
@@ -298,35 +369,44 @@
   }
   
   .result-image {
-    max-width: 300px;
-    max-height: 300px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    border: 2px solid rgba(255,255,255,0.1);
+    max-width: 320px;
+    max-height: 320px;
+    border-radius: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(180, 106, 255, 0.3);
+    border: 2px solid rgba(255,255,255,0.2);
     display: none;
     object-fit: contain;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateZ(40px);
   }
 
   .result-title {
     font-family: 'Oswald', sans-serif;
-    font-size: 70px;
+    font-size: 80px;
     color: #b46aff;
     margin-bottom: 15px;
     text-transform: uppercase;
     text-align: center;
     line-height: 1;
+    text-shadow: 0 10px 20px rgba(0,0,0,0.8);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+    transform: translateZ(50px);
   }
+  
   .result-sub {
-    font-size: 18px;
-    color: #ccc;
+    font-size: 20px;
+    color: #ddd;
     text-align: center;
     max-width: 800px;
     font-style: italic;
     line-height: 1.4;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+    transform: translateZ(30px);
   }
-  .result-sub.no { color: #ff4444; }
+  .result-sub.no { color: #ff6b6b; }
 
   .result-buttons {
     display: flex;
@@ -334,66 +414,88 @@
     align-items: center;
     gap: 15px;
     margin-top: 10px;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+    transform: translateZ(60px);
   }
 
+  /* 3D Кнопка FACEIT */
   .faceit-btn {
-    background: #ff8c00;
+    background: linear-gradient(135deg, #ffaa33 0%, #ff7b00 100%);
     color: #000;
     font-family: 'Oswald', sans-serif;
     font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 14px 40px;
-    border: none;
-    border-radius: 5px;
+    padding: 16px 50px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50px;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
-    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4), inset 0 2px 5px rgba(255,255,255,0.5);
+    transition: all 0.2s;
     display: none; 
   }
   .faceit-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 140, 0, 0.8);
-    background: #ffaa33;
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.6), inset 0 2px 5px rgba(255,255,255,0.7);
   }
+  .faceit-btn:active { transform: scale(0.95); }
 
+  /* 3D Кнопка YouTube */
   .youtube-btn {
-    background: #ff0000;
+    background: linear-gradient(135deg, #ff4d4d 0%, #cc0000 100%);
     color: #fff;
     font-family: 'Oswald', sans-serif;
     font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 14px 40px;
-    border: none;
-    border-radius: 5px;
+    padding: 16px 50px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 50px;
     cursor: pointer;
     text-decoration: none;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4), inset 0 2px 5px rgba(255,255,255,0.3);
+    transition: all 0.2s;
     display: none;
   }
   .youtube-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
-    background: #ff3333;
+    box-shadow: 0 15px 35px rgba(255, 0, 0, 0.6), inset 0 2px 5px rgba(255,255,255,0.5);
   }
+  .youtube-btn:active { transform: scale(0.95); }
 
+  /* Стеклянная кнопка Закрыть */
   .close-btn {
-    background: transparent; 
-    border: 2px solid #b46aff; 
-    color: #b46aff; 
-    box-shadow: none; 
-    padding: 12px 40px; 
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    color: #fff; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+    padding: 14px 45px; 
     font-size: 18px;
+    border-radius: 50px;
   }
   .close-btn:hover {
-    background: rgba(180, 106, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+
+  /* Анимации парения */
+  @keyframes floatTitle {
+    0%, 100% { transform: translateZ(50px) translateY(0); }
+    50% { transform: translateZ(50px) translateY(-10px); }
+  }
+  @keyframes floatGif {
+    0%, 100% { transform: translateZ(30px) rotateX(5deg) translateY(0); }
+    50% { transform: translateZ(30px) rotateX(5deg) translateY(-15px); }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
   }
 
   @media (max-width: 768px) {
-    .main-frame { padding: 20px; min-height: auto; gap: 30px; margin-top: 60px; padding-bottom: 120px; }
+    .main-frame { padding: 20px; min-height: auto; gap: 30px; margin-top: 60px; padding-bottom: 140px; }
     .hero-title { font-size: 50px; white-space: normal; }
     .center-gif { width: 280px; height: 280px; }
     
@@ -424,9 +526,7 @@
   
   <!-- Кнопка Steam -->
   <a href="https://steamcommunity.com/id/qweire/" target="_blank" class="steam-link" title="Мой Steam">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 2a10 10 0 0 0-9.94 9.06L6.06 13a2.5 2.5 0 0 1 1.44-1.44A2.5 2.5 0 0 1 11 13.5a2.5 2.5 0 0 1-2.5 2.5 2.5 2.5 0 0 1-2.5-2.5v-.2L2.3 11.04A10 10 0 1 0 12 2zm0 15a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm-3.5-5A2.5 2.5 0 1 0 11 14.5 2.5 2.5 0 0 0 8.5 12zm7.5-5A3.5 3.5 0 1 0 16 10.5 3.5 3.5 0 0 0 16 7zm-7 1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
-    </svg>
+    <img src="steam.png" alt="Steam">
   </a>
 
   <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
@@ -529,7 +629,6 @@
     "«Вы недооцениваете мою силу»", "«Абсолютные всегда побеждают»"
   ];
 
-  // --- ПЛЕЕР ---
   function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     var m = Math.floor(seconds / 60);
@@ -571,7 +670,6 @@
   });
   bgMusic.volume = volumeSlider.value;
 
-  // --- АВТОЗАПУСК МУЗЫКИ ---
   bgMusic.volume = 0.4;
   var playPromise = bgMusic.play();
   
@@ -590,7 +688,6 @@
     });
   }
 
-  // --- РУЛЕТКА С КАРТИНКАМИ ---
   rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
     rollBtn.style.opacity = '0.5';
@@ -610,7 +707,6 @@
       var el = document.createElement('div');
       el.className = 'roulette-item';
       
-      // Определяем картинку и текст для текущего элемента
       var isWinning = (i === winningIndex);
       var currentIsYes;
       
@@ -622,12 +718,10 @@
 
       el.classList.add(currentIsYes ? 'yes' : 'no');
       
-      // Картинка
       var img = document.createElement('img');
       img.src = currentIsYes ? YES_IMAGE_URL : NO_IMAGE_URL;
       el.appendChild(img);
       
-      // Текст
       var text = document.createElement('div');
       text.className = 'item-text';
       text.textContent = currentIsYes ? 'РЕГАТЬ' : 'НЕ РЕГАТЬ';
@@ -638,7 +732,6 @@
 
     rouletteContainer.classList.add('active');
     
-    // Ширина элемента (220px на десктопе, 130px на мобилке)
     var itemWidth = window.innerWidth <= 768 ? 130 : 220;
     var randomOffset = (Math.random() - 0.5) * (itemWidth * 0.6);
     var windowWidth = document.querySelector('.roulette-window').offsetWidth;
@@ -676,17 +769,4 @@
       resTitle.style.color = "#ff4444";
       resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub no";
-      faceitBtn.style.display = 'none'; 
-      youtubeBtn.style.display = 'block'; 
-    }
-
-    overlay.classList.add('active');
-  }
-
-  closeBtn.addEventListener('click', function() {
-    overlay.classList.remove('active');
-  });
-})();
-</script>
-</body>
-</html>
+      faceitBtn.style.display
