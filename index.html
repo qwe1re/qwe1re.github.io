@@ -44,7 +44,6 @@
     gap: 40px;
   }
 
-  /* Главный заголовок */
   .hero-title {
     font-family: 'Oswald', sans-serif;
     font-size: clamp(60px, 11vw, 150px);
@@ -58,7 +57,6 @@
     text-align: center;
   }
 
-  /* Гифка по центру */
   .center-gif {
     max-width: 450px;
     max-height: 450px;
@@ -71,7 +69,6 @@
     object-fit: contain;
   }
 
-  /* Кнопка Крутить */
   .action-btn {
     background: #b46aff;
     color: #000;
@@ -92,21 +89,22 @@
     box-shadow: 0 0 40px rgba(180, 106, 255, 0.8);
   }
 
-  /* Подпись автора */
-  .made-by {
+  /* Ссылка на Steam */
+  .steam-link {
     position: absolute;
     bottom: 20px;
-    left: 30px;
-    text-align: left;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    z-index: 3;
+    left: 20px;
+    z-index: 10;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+  .steam-link:hover { opacity: 1; }
+  .steam-link svg { width: 24px; height: 24px; fill: #fff; }
 
-  /* ---------------- ПЛЕЕР ---------------- */
+  /* Плеер */
   .audio-player {
     position: absolute;
     bottom: 20px;
@@ -198,7 +196,7 @@
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0, 0, 0, 0.95);
-    display: none; /* Скрыто по умолчанию */
+    display: none; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -210,11 +208,10 @@
     display: flex;
   }
 
-  /* Окно, в котором крутятся элементы */
   .roulette-window {
-    width: 600px;
-    max-width: 90%;
-    height: 120px;
+    width: 700px; /* Сделали окно чуть шире, чтобы картинки лучше смотрелись */
+    max-width: 95%;
+    height: 200px; /* Увеличили высоту под картинки */
     background: #111;
     border: 3px solid #b46aff;
     border-radius: 15px;
@@ -223,7 +220,6 @@
     box-shadow: 0 0 40px rgba(180, 106, 255, 0.3);
   }
 
-  /* Указатель по центру */
   .roulette-pointer {
     position: absolute;
     left: 50%;
@@ -236,7 +232,6 @@
     box-shadow: 0 0 15px #fff, 0 0 30px #b46aff;
   }
 
-  /* Лента с результатами */
   .roulette-track {
     display: flex;
     align-items: center;
@@ -246,25 +241,39 @@
     will-change: transform;
   }
 
-  /* Элементы внутри рулетки */
+  /* Элемент рулетки (картинка + текст) */
   .roulette-item {
-    width: 200px;
+    width: 220px; /* Ширина одного элемента */
     flex-shrink: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Oswald', sans-serif;
-    font-size: 32px;
-    font-weight: bold;
-    text-transform: uppercase;
     border-right: 2px solid #222;
     border-left: 2px solid #222;
     height: 100%;
     box-sizing: border-box;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.02);
   }
 
-  .roulette-item.yes { color: #b46aff; }
-  .roulette-item.no { color: #ff4444; }
+  .roulette-item img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  }
+
+  .roulette-item .item-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .roulette-item.yes .item-text { color: #b46aff; }
+  .roulette-item.no .item-text { color: #ff4444; }
   /* ==================================================== */
 
   /* Оверлей результата */
@@ -388,8 +397,10 @@
     .hero-title { font-size: 50px; white-space: normal; }
     .center-gif { width: 280px; height: 280px; }
     
-    .roulette-window { height: 80px; }
-    .roulette-item { width: 150px; font-size: 24px; }
+    .roulette-window { height: 150px; }
+    .roulette-item { width: 130px; gap: 5px; }
+    .roulette-item img { width: 70px; height: 70px; }
+    .roulette-item .item-text { font-size: 14px; }
 
     .audio-player { 
       position: relative; 
@@ -399,7 +410,7 @@
       max-width: 350px; 
       margin: 0 auto;
     }
-    .made-by { position: relative; bottom: 0; left: 0; margin-top: 20px; }
+    .steam-link { bottom: 10px; left: 50%; transform: translateX(-50%); }
     body { padding-top: 20px; align-items: flex-start; }
     .result-image { max-width: 200px; max-height: 200px; }
     .result-title { font-size: 50px; }
@@ -411,15 +422,20 @@
 
 <div class="main-frame">
   
+  <!-- Кнопка Steam -->
+  <a href="https://steamcommunity.com/id/qweire/" target="_blank" class="steam-link" title="Мой Steam">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2a10 10 0 0 0-9.94 9.06L6.06 13a2.5 2.5 0 0 1 1.44-1.44A2.5 2.5 0 0 1 11 13.5a2.5 2.5 0 0 1-2.5 2.5 2.5 2.5 0 0 1-2.5-2.5v-.2L2.3 11.04A10 10 0 1 0 12 2zm0 15a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm-3.5-5A2.5 2.5 0 1 0 11 14.5 2.5 2.5 0 0 0 8.5 12zm7.5-5A3.5 3.5 0 1 0 16 10.5 3.5 3.5 0 0 0 16 7zm-7 1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+    </svg>
+  </a>
+
   <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
 
   <img src="https://media1.tenor.com/m/9MwgBZ30qnsAAAAd/crona-soul-eater.gif" class="center-gif" alt="Crona">
 
   <button id="rollBtn" class="action-btn">Крутить судьбу</button>
 
-  <div class="made-by">made by qwe1re</div>
-
-  <!-- ПЛЕЕР -->
+  <!-- Плеер -->
   <div class="audio-player">
     <div class="player-controls">
       <button id="playBtn" class="play-btn">
@@ -443,17 +459,15 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- АНИМАЦИЯ РУЛЕТКИ -->
+  <!-- Рулетка -->
   <div id="rouletteContainer" class="roulette-container">
     <div class="roulette-window">
       <div class="roulette-pointer"></div>
-      <div id="rouletteTrack" class="roulette-track">
-        <!-- Элементы генерируются через JS -->
-      </div>
+      <div id="rouletteTrack" class="roulette-track"></div>
     </div>
   </div>
 
-  <!-- ОВЕРЛЕЙ РЕЗУЛЬТАТА -->
+  <!-- Оверлей результата -->
   <div id="resultOverlay" class="result-overlay">
     <img id="resImg" class="result-image" src="" alt="Результат">
     <div id="resTitle" class="result-title"></div>
@@ -480,11 +494,9 @@
   var faceitBtn = document.getElementById('faceitBtn');
   var youtubeBtn = document.getElementById('youtubeBtn');
 
-  // Рулетка
   var rouletteContainer = document.getElementById('rouletteContainer');
   var rouletteTrack = document.getElementById('rouletteTrack');
 
-  // Плеер
   var bgMusic = document.getElementById('bgMusic');
   var playBtn = document.getElementById('playBtn');
   var playIcon = document.getElementById('playIcon');
@@ -517,7 +529,7 @@
     "«Вы недооцениваете мою силу»", "«Абсолютные всегда побеждают»"
   ];
 
-  // --- ЛОГИКА ПЛЕЕРА ---
+  // --- ПЛЕЕР ---
   function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     var m = Math.floor(seconds / 60);
@@ -559,81 +571,89 @@
   });
   bgMusic.volume = volumeSlider.value;
 
+  // --- АВТОЗАПУСК МУЗЫКИ ---
+  bgMusic.volume = 0.4;
+  var playPromise = bgMusic.play();
+  
+  if (playPromise !== undefined) {
+    playPromise.then(function() {
+      playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+    }).catch(function() {
+      var enableAudio = function() {
+        bgMusic.play();
+        playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+        document.removeEventListener('click', enableAudio);
+        document.removeEventListener('touchstart', enableAudio);
+      };
+      document.addEventListener('click', enableAudio);
+      document.addEventListener('touchstart', enableAudio);
+    });
+  }
 
-  // --- ЛОГИКА РУЛЕТКИ И РЕЗУЛЬТАТА ---
+  // --- РУЛЕТКА С КАРТИНКАМИ ---
   rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
     rollBtn.style.opacity = '0.5';
-
-    // Заранее определяем результат (50/50)
     var isYes = Math.random() < 0.5;
-    
     startRouletteAnimation(isYes);
   });
 
   function startRouletteAnimation(isYes) {
-    // Очищаем предыдущую ленту
     rouletteTrack.innerHTML = '';
     rouletteTrack.style.transition = 'none';
     rouletteTrack.style.transform = 'translateX(0)';
 
-    // Генерируем 50 элементов для прокрутки
     var itemsCount = 50;
-    var winningIndex = 45; // Где остановится (ближе к концу)
+    var winningIndex = 45;
 
     for (var i = 0; i < itemsCount; i++) {
       var el = document.createElement('div');
       el.className = 'roulette-item';
       
-      if (i === winningIndex) {
-        // Выигрышный элемент
-        el.classList.add(isYes ? 'yes' : 'no');
-        el.textContent = isYes ? 'РЕГАТЬ' : 'НЕ РЕГАТЬ';
-      } else {
-        // Рандомные элементы для фона
-        var randomYes = Math.random() < 0.5;
-        el.classList.add(randomYes ? 'yes' : 'no');
-        el.textContent = randomYes ? 'РЕГАТЬ' : 'НЕ РЕГАТЬ';
-      }
+      // Определяем картинку и текст для текущего элемента
+      var isWinning = (i === winningIndex);
+      var currentIsYes;
       
+      if (isWinning) {
+        currentIsYes = isYes;
+      } else {
+        currentIsYes = Math.random() < 0.5;
+      }
+
+      el.classList.add(currentIsYes ? 'yes' : 'no');
+      
+      // Картинка
+      var img = document.createElement('img');
+      img.src = currentIsYes ? YES_IMAGE_URL : NO_IMAGE_URL;
+      el.appendChild(img);
+      
+      // Текст
+      var text = document.createElement('div');
+      text.className = 'item-text';
+      text.textContent = currentIsYes ? 'РЕГАТЬ' : 'НЕ РЕГАТЬ';
+      el.appendChild(text);
+
       rouletteTrack.appendChild(el);
     }
 
-    // Показываем рулетку
     rouletteContainer.classList.add('active');
-
-    // Вычисляем смещение для остановки
-    // Ширина одного элемента (200px на десктопе, 150px на мобилке)
-    var itemWidth = window.innerWidth <= 768 ? 150 : 200;
     
-    // Мы хотим, чтобы выигрышный элемент оказался ровно в центре окна.
-    // Окно рулетки 600px (или 90% на мобилке). Центр окна - это itemWidth * winningIndex + itemWidth/2
-    // Но так как лента смещается влево, нам нужно отрицательное значение.
-    
-    // Добавим немного случайности, чтобы он не останавливался идеально в центре (как в кейсах)
+    // Ширина элемента (220px на десктопе, 130px на мобилке)
+    var itemWidth = window.innerWidth <= 768 ? 130 : 220;
     var randomOffset = (Math.random() - 0.5) * (itemWidth * 0.6);
-    
-    // Итоговое смещение: 
-    // Мы хотим, чтобы центр выигрышного элемента совпал с центром окна.
-    // Сдвиг = (Индекс * Ширина) - (Ширина окна / 2) + (Ширина элемента / 2) + Рандом
     var windowWidth = document.querySelector('.roulette-window').offsetWidth;
     
-    // Небольшая задержка, чтобы DOM обновился
     setTimeout(function() {
       var moveDistance = (winningIndex * itemWidth) - (windowWidth / 2) + (itemWidth / 2) + randomOffset;
-      
-      // Запускаем анимацию CSS
       rouletteTrack.style.transition = 'transform 5s cubic-bezier(0.15, 0.85, 0.3, 1)';
       rouletteTrack.style.transform = 'translateX(-' + moveDistance + 'px)';
       
-      // Через 5 секунд (когда анимация закончится) показываем результат
       setTimeout(function() {
         rouletteContainer.classList.remove('active');
         showFinalResult(isYes);
         rollBtn.disabled = false;
         rollBtn.style.opacity = '1';
-      }, 5200); // 5.2 сек (чуть больше времени анимации)
-
+      }, 5200);
     }, 50);
   }
 
@@ -649,7 +669,6 @@
       resTitle.style.color = "#b46aff";
       resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub";
-      
       faceitBtn.style.display = 'block'; 
       youtubeBtn.style.display = 'none'; 
     } else {
@@ -657,7 +676,6 @@
       resTitle.style.color = "#ff4444";
       resSub.textContent = randomQuote + " — Skywhywalker";
       resSub.className = "result-sub no";
-      
       faceitBtn.style.display = 'none'; 
       youtubeBtn.style.display = 'block'; 
     }
