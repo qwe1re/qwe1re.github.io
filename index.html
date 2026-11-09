@@ -20,8 +20,8 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    overflow: hidden; /* Убираем скроллы для 3D-эффекта */
-    perspective: 1200px; /* Создаем 3D-глубину */
+    overflow: hidden;
+    perspective: 1200px;
   }
 
   /* 3D-Стеклянная рамка */
@@ -46,7 +46,8 @@
     min-height: 750px;
     gap: 40px;
     transform-style: preserve-3d;
-    transition: transform 0.1s ease-out; /* Плавность при движении мыши */
+    /* Более плавный переход для мягкой тряски */
+    transition: transform 0.2s ease-out; 
     will-change: transform;
   }
 
@@ -97,19 +98,25 @@
   .action-btn:hover { transform: translateZ(80px) scale(1.05); }
   .action-btn:active { transform: translateZ(30px) scale(0.95); }
 
-  /* Steam */
+  /* Steam иконка */
   .steam-link {
     position: absolute;
     bottom: 25px;
     left: 25px;
     z-index: 10;
-    opacity: 0.5;
+    opacity: 0.6;
     transition: all 0.3s;
     display: flex;
     transform: translateZ(20px);
   }
   .steam-link:hover { opacity: 1; transform: translateZ(40px) scale(1.1); }
-  .steam-link img { width: 36px; height: 36px; object-fit: contain; filter: invert(1); }
+  .steam-link img { 
+    width: 36px; 
+    height: 36px; 
+    object-fit: contain; 
+    border-radius: 8px; /* Легкое скругление для аккуратности */
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+  }
 
   /* Плеер */
   .audio-player {
@@ -167,7 +174,9 @@
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px);
     display: none; flex-direction: column; align-items: center; justify-content: center;
-    z-index: 15; perspective: 1500px;
+    z-index: 15; 
+    perspective: 1500px;
+    transform-style: preserve-3d; /* Для 3D-эффекта рулетки */
   }
   .roulette-container.active { display: flex; }
 
@@ -178,6 +187,8 @@
     position: relative; overflow: hidden;
     box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 50px rgba(180, 106, 255, 0.2);
     transform: rotateX(10deg);
+    transition: transform 0.2s ease-out; /* Плавность при движении мыши */
+    will-change: transform;
   }
   .roulette-window::before, .roulette-window::after {
     content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 5; pointer-events: none;
@@ -285,8 +296,9 @@
 
 <div class="main-frame" id="mainFrame">
   
+  <!-- Обновленная ссылка на Steam -->
   <a href="https://steamcommunity.com/id/qweire/" target="_blank" class="steam-link" title="Мой Steam">
-    <img src="steam.png" alt="Steam">
+    <img src="https://riotpixels.net/wp/wp-content/uploads/2015/03/steam-generic-logo-v2-300px.jpg" alt="Steam">
   </a>
 
   <div class="hero-title">РЕГАТЬ ИЛИ НЕТ?</div>
@@ -341,7 +353,6 @@
 
 <script>
 (function() {
-  // Элементы
   var mainFrame = document.getElementById('mainFrame');
   var rollBtn = document.getElementById('rollBtn');
   var overlay = document.getElementById('resultOverlay');
@@ -355,6 +366,7 @@
 
   var rouletteContainer = document.getElementById('rouletteContainer');
   var rouletteTrack = document.getElementById('rouletteTrack');
+  var rouletteWindow = document.querySelector('.roulette-window'); // Получаем окно рулетки
 
   var bgMusic = document.getElementById('bgMusic');
   var playBtn = document.getElementById('playBtn');
@@ -364,9 +376,9 @@
   var totalTimeEl = document.getElementById('totalTime');
   var volumeSlider = document.getElementById('volumeSlider');
 
-  // Данные
   var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; 
   var NO_IMAGE_URL  = "https://i.pinimg.com/736x/f3/d7/47/f3d747fe35ddb4d1353ece896f566d1f.jpg";  
+  
   var quotes = [
     "«Абсолютный!»", "«Запоминайте цитату…»", "«Муваюсь так жёстко!»",
     "«Вы зашли на стрим к абсолютному»", "«Ты что, глупый?!»",
@@ -388,23 +400,28 @@
     "«Вы недооцениваете мою силу»", "«Абсолютные всегда побеждают»"
   ];
 
-  // ================= 3D-ЭФФЕКТ ПРИ ДВИЖЕНИИ МЫШИ =================
+  // ================= 3D-ЭФФЕКТ (ОСЛАБЛЕННЫЙ) =================
   document.addEventListener('mousemove', function(e) {
-    // Работает только на ПК (ширина экрана > 768px)
     if (window.innerWidth > 768) {
-      var xAxis = (window.innerWidth / 2 - e.pageX) / 50; // Скорость наклона по X
-      var yAxis = (window.innerHeight / 2 - e.pageY) / 50; // Скорость наклона по Y
+      // Делитель 200 делает наклон очень легким и плавным
+      var xAxis = (window.innerWidth / 2 - e.pageX) / 200; 
+      var yAxis = (window.innerHeight / 2 - e.pageY) / 200; 
       
-      // Применяем трансформацию (наклон)
       mainFrame.style.transform = 'rotateY(' + xAxis + 'deg) rotateX(' + yAxis + 'deg)';
+
+      // Дополнительный наклон для рулетки во время прокрутки
+      if (rouletteContainer.classList.contains('active')) {
+        rouletteWindow.style.transform = 'rotateX(10deg) rotateY(' + (xAxis * 0.5) + 'deg) rotateX(' + (yAxis * 0.5) + 'deg)';
+      }
     }
   });
 
-  // Возвращаем рамку в исходное положение, если мышка ушла с окна
   document.addEventListener('mouseleave', function() {
     mainFrame.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    if (rouletteWindow) {
+      rouletteWindow.style.transform = 'rotateX(10deg) rotateY(0deg) rotateX(0deg)';
+    }
   });
-
 
   // ================= ЛОГИКА ПЛЕЕРА =================
   function formatTime(seconds) {
@@ -448,7 +465,6 @@
   });
   bgMusic.volume = volumeSlider.value;
 
-  // Автозапуск музыки
   bgMusic.volume = 0.4;
   var playPromise = bgMusic.play();
   
@@ -467,12 +483,11 @@
     });
   }
 
-
   // ================= ЛОГИКА РУЛЕТКИ =================
   rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
     rollBtn.style.opacity = '0.5';
-    var isYes = Math.random() < 0.5; // 50/50
+    var isYes = Math.random() < 0.5;
     startRouletteAnimation(isYes);
   });
 
@@ -480,6 +495,9 @@
     rouletteTrack.innerHTML = '';
     rouletteTrack.style.transition = 'none';
     rouletteTrack.style.transform = 'translateX(0)';
+    
+    // Сбрасываем наклон рулетки перед стартом
+    if (rouletteWindow) rouletteWindow.style.transform = 'rotateX(10deg) rotateY(0deg) rotateX(0deg)';
 
     var itemsCount = 50;
     var winningIndex = 45;
@@ -519,7 +537,7 @@
         showFinalResult(isYes);
         rollBtn.disabled = false;
         rollBtn.style.opacity = '1';
-      }, 5200); // Ожидание окончания анимации
+      }, 5200);
     }, 50);
   }
 
