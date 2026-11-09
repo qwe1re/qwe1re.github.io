@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>РЕГАТЬ ИЛИ НЕТ?</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -14,7 +12,8 @@
     background-image: radial-gradient(circle at 50% 0%, #1a0b2e 0%, #000000 70%),
                       repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px);
     color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -46,13 +45,30 @@
     min-height: 750px;
     gap: 40px;
     transform-style: preserve-3d;
-    /* Более плавный переход для мягкой тряски */
-    transition: transform 0.2s ease-out; 
+    transition: transform 0.2s ease-out, box-shadow 0.5s ease; 
     will-change: transform;
   }
 
+  /* Эффект светящихся уголков при прокрутке */
+  .main-frame.glowing-corners {
+    box-shadow: 
+      0 30px 60px rgba(0, 0, 0, 0.6), 
+      inset 0 0 40px rgba(180, 106, 255, 0.6),
+      inset 0 0 80px rgba(180, 106, 255, 0.3),
+      0 0 30px rgba(180, 106, 255, 0.5);
+    border-color: rgba(180, 106, 255, 0.8);
+    animation: pulseGlow 1.5s infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(180, 106, 255, 0.6), 0 0 30px rgba(180, 106, 255, 0.5); }
+    100% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(180, 106, 255, 0.9), 0 0 50px rgba(180, 106, 255, 0.8); }
+  }
+
   .hero-title {
-    font-family: 'Oswald', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 900;
     font-size: clamp(60px, 11vw, 150px);
     line-height: 0.8;
     color: #b46aff;
@@ -81,9 +97,10 @@
   .action-btn {
     background: linear-gradient(135deg, #c37bff 0%, #9145ff 100%);
     color: #fff;
-    font-family: 'Oswald', sans-serif;
-    font-size: 24px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
     font-weight: bold;
+    font-size: 24px;
     text-transform: uppercase;
     padding: 20px 70px;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -114,7 +131,7 @@
     width: 36px; 
     height: 36px; 
     object-fit: contain; 
-    border-radius: 8px; /* Легкое скругление для аккуратности */
+    border-radius: 8px;
     filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
   }
 
@@ -132,7 +149,7 @@
     padding: 15px;
     border-radius: 20px;
     z-index: 10;
-    width: 290px;
+    width: 260px; /* Сделали чуть уже без таймера */
     box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
     transform: translateZ(20px);
   }
@@ -157,8 +174,9 @@
   .play-btn svg { width: 14px; height: 14px; fill: #fff; }
 
   .seek-bar { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
-  .time-info { display: flex; justify-content: space-between; font-size: 11px; color: #ccc; }
-
+  
+  /* Убрали time-info, оставили только ползунок */
+  
   .volume-control { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
   .volume-control svg { width: 16px; height: 16px; fill: #c37bff; flex-shrink: 0; }
 
@@ -176,7 +194,7 @@
     display: none; flex-direction: column; align-items: center; justify-content: center;
     z-index: 15; 
     perspective: 1500px;
-    transform-style: preserve-3d; /* Для 3D-эффекта рулетки */
+    transform-style: preserve-3d;
   }
   .roulette-container.active { display: flex; }
 
@@ -187,7 +205,7 @@
     position: relative; overflow: hidden;
     box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 50px rgba(180, 106, 255, 0.2);
     transform: rotateX(10deg);
-    transition: transform 0.2s ease-out; /* Плавность при движении мыши */
+    transition: transform 0.2s ease-out;
     will-change: transform;
   }
   .roulette-window::before, .roulette-window::after {
@@ -212,8 +230,13 @@
     width: 110px; height: 110px; border-radius: 15px; object-fit: cover;
     box-shadow: 0 10px 20px rgba(0,0,0,0.8), 0 0 15px rgba(180, 106, 255, 0.3); transform: translateZ(20px);
   }
+  
   .roulette-item .item-text {
-    font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: bold; text-transform: uppercase;
+    font-family: Georgia, 'Times New Roman', serif; 
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px; 
+    text-transform: uppercase;
     text-shadow: 0 2px 5px rgba(0,0,0,0.8); transform: translateZ(10px);
   }
   .roulette-item.yes .item-text { color: #c37bff; }
@@ -234,13 +257,29 @@
     border: 2px solid rgba(255,255,255,0.2); display: none; object-fit: contain; transform: translateZ(40px);
   }
   .result-title {
-    font-family: 'Oswald', sans-serif; font-size: 80px; color: #b46aff; margin-bottom: 15px;
-    text-transform: uppercase; text-align: center; line-height: 1; text-shadow: 0 10px 20px rgba(0,0,0,0.8);
+    font-family: Georgia, 'Times New Roman', serif; 
+    font-style: italic;
+    font-weight: 900;
+    font-size: 80px; 
+    color: #b46aff; 
+    margin-bottom: 15px;
+    text-transform: uppercase; 
+    text-align: center; 
+    line-height: 1; 
+    text-shadow: 0 10px 20px rgba(0,0,0,0.8);
     transform: translateZ(50px);
   }
   .result-sub {
-    font-size: 20px; color: #ddd; text-align: center; max-width: 800px; font-style: italic;
-    line-height: 1.4; margin-bottom: 25px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); transform: translateZ(30px);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 20px; 
+    color: #ddd; 
+    text-align: center; 
+    max-width: 800px; 
+    line-height: 1.4; 
+    margin-bottom: 25px; 
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5); 
+    transform: translateZ(30px);
   }
   .result-sub.no { color: #ff6b6b; }
 
@@ -248,7 +287,11 @@
 
   .faceit-btn {
     background: linear-gradient(135deg, #ffaa33 0%, #ff7b00 100%); color: #000;
-    font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: bold; text-transform: uppercase;
+    font-family: Georgia, 'Times New Roman', serif; 
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px; 
+    text-transform: uppercase;
     padding: 16px 50px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50px; cursor: pointer;
     text-decoration: none; box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4), inset 0 2px 5px rgba(255,255,255,0.5);
     transition: all 0.2s; display: none;
@@ -258,7 +301,11 @@
 
   .youtube-btn {
     background: linear-gradient(135deg, #ff4d4d 0%, #cc0000 100%); color: #fff;
-    font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: bold; text-transform: uppercase;
+    font-family: Georgia, 'Times New Roman', serif; 
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px; 
+    text-transform: uppercase;
     padding: 16px 50px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50px; cursor: pointer;
     text-decoration: none; box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4), inset 0 2px 5px rgba(255,255,255,0.3);
     transition: all 0.2s; display: none;
@@ -269,6 +316,9 @@
   .close-btn {
     background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3); color: #fff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: bold;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3); padding: 14px 45px; font-size: 18px; border-radius: 50px;
   }
   .close-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
@@ -283,7 +333,7 @@
     .roulette-item img { width: 70px; height: 70px; }
     .roulette-item .item-text { font-size: 14px; }
 
-    .audio-player { position: relative; bottom: 0; right: 0; width: 100%; max-width: 350px; margin: 0 auto; }
+    .audio-player { position: relative; bottom: 0; right: 0; width: 100%; max-width: 300px; margin: 0 auto; }
     .steam-link { bottom: 10px; left: 50%; transform: translateX(-50%); }
     body { padding-top: 20px; align-items: flex-start; overflow-y: auto; }
     .result-image { max-width: 200px; max-height: 200px; }
@@ -296,7 +346,7 @@
 
 <div class="main-frame" id="mainFrame">
   
-  <!-- Обновленная ссылка на Steam -->
+  <!-- Ссылка на Steam -->
   <a href="https://steamcommunity.com/id/qweire/" target="_blank" class="steam-link" title="Мой Steam">
     <img src="https://riotpixels.net/wp/wp-content/uploads/2015/03/steam-generic-logo-v2-300px.jpg" alt="Steam">
   </a>
@@ -314,10 +364,6 @@
       </button>
       <div class="seek-bar">
         <input type="range" id="seekSlider" min="0" max="100" value="0" step="0.1">
-        <div class="time-info">
-          <span id="currentTime">0:00</span>
-          <span id="totalTime">0:00</span>
-        </div>
       </div>
     </div>
     <div class="volume-control">
@@ -366,14 +412,12 @@
 
   var rouletteContainer = document.getElementById('rouletteContainer');
   var rouletteTrack = document.getElementById('rouletteTrack');
-  var rouletteWindow = document.querySelector('.roulette-window'); // Получаем окно рулетки
+  var rouletteWindow = document.querySelector('.roulette-window');
 
   var bgMusic = document.getElementById('bgMusic');
   var playBtn = document.getElementById('playBtn');
   var playIcon = document.getElementById('playIcon');
   var seekSlider = document.getElementById('seekSlider');
-  var currentTimeEl = document.getElementById('currentTime');
-  var totalTimeEl = document.getElementById('totalTime');
   var volumeSlider = document.getElementById('volumeSlider');
 
   var YES_IMAGE_URL = "https://i.pinimg.com/736x/b5/ef/ab/b5efab201bf5ecca2d52fb496c6b0a7d.jpg"; 
@@ -403,13 +447,11 @@
   // ================= 3D-ЭФФЕКТ (ОСЛАБЛЕННЫЙ) =================
   document.addEventListener('mousemove', function(e) {
     if (window.innerWidth > 768) {
-      // Делитель 200 делает наклон очень легким и плавным
       var xAxis = (window.innerWidth / 2 - e.pageX) / 200; 
       var yAxis = (window.innerHeight / 2 - e.pageY) / 200; 
       
       mainFrame.style.transform = 'rotateY(' + xAxis + 'deg) rotateX(' + yAxis + 'deg)';
 
-      // Дополнительный наклон для рулетки во время прокрутки
       if (rouletteContainer.classList.contains('active')) {
         rouletteWindow.style.transform = 'rotateX(10deg) rotateY(' + (xAxis * 0.5) + 'deg) rotateX(' + (yAxis * 0.5) + 'deg)';
       }
@@ -424,13 +466,6 @@
   });
 
   // ================= ЛОГИКА ПЛЕЕРА =================
-  function formatTime(seconds) {
-    if (isNaN(seconds)) return "0:00";
-    var m = Math.floor(seconds / 60);
-    var s = Math.floor(seconds % 60);
-    return m + ":" + (s < 10 ? "0" : "") + s;
-  }
-
   playBtn.addEventListener('click', function() {
     if (bgMusic.paused) {
       bgMusic.play();
@@ -445,12 +480,7 @@
     if (!isNaN(bgMusic.duration)) {
       var percent = (bgMusic.currentTime / bgMusic.duration) * 100;
       seekSlider.value = percent;
-      currentTimeEl.textContent = formatTime(bgMusic.currentTime);
     }
-  });
-
-  bgMusic.addEventListener('loadedmetadata', function() {
-    totalTimeEl.textContent = formatTime(bgMusic.duration);
   });
 
   seekSlider.addEventListener('input', function() {
@@ -487,6 +517,10 @@
   rollBtn.addEventListener('click', function() {
     rollBtn.disabled = true;
     rollBtn.style.opacity = '0.5';
+    
+    // Включаем свечение уголков
+    mainFrame.classList.add('glowing-corners');
+    
     var isYes = Math.random() < 0.5;
     startRouletteAnimation(isYes);
   });
@@ -496,7 +530,6 @@
     rouletteTrack.style.transition = 'none';
     rouletteTrack.style.transform = 'translateX(0)';
     
-    // Сбрасываем наклон рулетки перед стартом
     if (rouletteWindow) rouletteWindow.style.transform = 'rotateX(10deg) rotateY(0deg) rotateX(0deg)';
 
     var itemsCount = 50;
@@ -537,6 +570,9 @@
         showFinalResult(isYes);
         rollBtn.disabled = false;
         rollBtn.style.opacity = '1';
+        
+        // Выключаем свечение уголков после завершения
+        mainFrame.classList.remove('glowing-corners');
       }, 5200);
     }, 50);
   }
